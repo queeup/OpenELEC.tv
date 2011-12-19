@@ -1,6 +1,6 @@
-diff -Naur flexget-1.0r2552/flexget/ui/__init__.py flexget-1.0r2552.patch/flexget/ui/__init__.py
---- flexget-1.0r2552/flexget/ui/__init__.py	2011-08-06 20:29:14.000000000 +0300
-+++ flexget-1.0r2552.patch/flexget/ui/__init__.py	2011-12-19 04:15:51.367848421 +0200
+diff -Naur FlexGet-1.0r2558/flexget/ui/__init__.py FlexGet-1.0r2558.patch/flexget/ui/__init__.py
+--- FlexGet-1.0r2558/flexget/ui/__init__.py	2011-08-06 20:29:14.000000000 +0300
++++ FlexGet-1.0r2558.patch/flexget/ui/__init__.py	2011-12-19 23:58:22.521024575 +0200
 @@ -34,6 +34,9 @@
          sys.exit(1)
  

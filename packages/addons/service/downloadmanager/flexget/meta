@@ -18,14 +18,13 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="flexget"
-PKG_ARCHIVE_NAME="FlexGet"
+PKG_NAME="FlexGet"
 PKG_VERSION="1.0r2558"
 PKG_REV="0"
 PKG_ARCH="any"
 PKG_LICENSE="MIT"
 PKG_SITE="http://flexget.com/"
-PKG_URL="http://download.flexget.com/unstable/$PKG_ARCHIVE_NAME-$PKG_VERSION.tar.gz"
+PKG_URL="http://download.flexget.com/unstable/$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_DEPENDS="Python"
 PKG_BUILD_DEPENDS="toolchain Python flexgetlib"
 PKG_PRIORITY="optional"
