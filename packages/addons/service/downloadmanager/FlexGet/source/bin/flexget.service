@@ -22,8 +22,8 @@
 
 . /etc/profile
 
-ADDON_DIR="$HOME/.xbmc/addons/service.downloadmanager.flexget"
-ADDON_HOME="$HOME/.xbmc/userdata/addon_data/service.downloadmanager.flexget"
+ADDON_DIR="$HOME/.xbmc/addons/service.downloadmanager.FlexGet"
+ADDON_HOME="$HOME/.xbmc/userdata/addon_data/service.downloadmanager.FlexGet"
 LOG_FILE="$ADDON_HOME/service.log"
 
 export PYTHONPATH="$PYTHONPATH:$ADDON_DIR/pylib"
