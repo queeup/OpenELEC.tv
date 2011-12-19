@@ -1,0 +1,7 @@
+<settings>
+  <setting id="FLEXGET_START" value="false" />
+  <setting id="FLEXGET_PORT" value="5050" />
+  <setting id="FLEXGET_AUTH" value="false" />
+  <setting id="FLEXGET_PWD" value="flexget" />
+  <setting id="FLEXGET_USER" value="flexget" />
+</settings>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+
+	<!-- Flexget -->
+	<string id="1000">Flexget</string>
+	<string id="1010">Kullanıcı Ayarları</string>
+  <string id="1020">Flexget'i önyüklemede çalıştır</string>
+  <string id="1021">Port</string>
+	<string id="1022">Kimlik doğrulama kullan</string>
+	<string id="1023">Kullanıcı adı</string>
+	<string id="1024">Parola</string>
+
+</strings>
