@@ -56,8 +56,11 @@ fi
 # start flexget
 ################################################################################
   if [ ! $(pidof flexget) ];then
+    if [ -f $ADDON_HOME/.config-lock ];then
+      rm $ADDON_HOME/.config-lock
+    fi
     if [ "$FLEXGET_START" = "true" ]; then
-      ln -s $ADDON_DIR/flexget_vanilla.py $ADDON_DIR/bin/flexget
+      ln -sf $ADDON_DIR/flexget_vanilla.py $ADDON_DIR/bin/flexget
       flexget $FLEXGET_ARG -c $ADDON_HOME/config.yml &>$LOG_FILE
     fi
   fi
