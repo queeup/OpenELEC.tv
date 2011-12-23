@@ -22,14 +22,11 @@
 
 . config/options $1
 
-VER=`ls $BUILD/linux*/modules/lib/modules`
+STAMP=$STAMPS/$1/unpack
 
-mkdir -p $INSTALL/lib/modules/$VER/AF9035
-  cp $PKG_BUILD/af9033.ko $INSTALL/lib/modules/$VER/AF9035
-  cp $PKG_BUILD/dvb-usb-af9035.ko $INSTALL/lib/modules/$VER/AF9035
-  cp $PKG_BUILD/mxl5007t.ko $INSTALL/lib/modules/$VER/AF9035
-  cp $PKG_BUILD/tua9001.ko $INSTALL/lib/modules/$VER/AF9035
-  cp $PKG_BUILD/tuner_tda18218.ko $INSTALL/lib/modules/$VER/AF9035
+test $PKG_DIR/config/linux.$TARGET_ARCH.conf -nt $STAMP -o \
+     $PROJECT_DIR/$PROJECT/linux/linux.$TARGET_ARCH.conf -nt $STAMP -o \
+     $PKG_DIR/url -nt $STAMP -o \
+     $PKG_DIR/meta -nt $STAMP && rm -f $STAMP
 
-mkdir -p $INSTALL/usr/lib/firmware
-  cp $PKG_DIR/firmware/*.fw $INSTALL/usr/lib/firmware
+exit 0
