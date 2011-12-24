@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="FlexGet"
-PKG_VERSION="1.0r2579"
+PKG_VERSION="1.0r2594"
 PKG_REV="0"
 PKG_ARCH="any"
 PKG_LICENSE="MIT"
