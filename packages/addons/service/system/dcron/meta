@@ -1,6 +1,7 @@
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2011-2011 Gregor Fuis (gujs@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -18,7 +19,21 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import xbmcgui
+PKG_NAME="dcron"
+PKG_VERSION="4.5"
+PKG_REV="0"
+PKG_ARCH="any"
+PKG_LICENSE="GPL"
+PKG_SITE="http://www.jimpryor.net/linux/dcron.html"
+PKG_URL="http://www.jimpryor.net/linux/releases/${PKG_NAME}-${PKG_VERSION}.tar.gz"
+PKG_DEPENDS=""
+PKG_BUILD_DEPENDS="toolchain nano"
+PKG_PRIORITY="optional"
+PKG_SECTION="service/system"
+PKG_SHORTDESC="This lightweight cron daemon aims to be simple and secure, with just enough features to stay useful."
+PKG_LONGDESC="This lightweight cron daemon aims to be simple and secure, with just enough features to stay useful."
 
-dialog = xbmcgui.Dialog()
-ok = dialog.ok('nano', 'This is shell add-on.', "You can't use it from GUI!")
+PKG_IS_ADDON="yes"
+PKG_ADDON_TYPE="xbmc.service"
+
+PKG_AUTORECONF="no"

@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
@@ -18,7 +20,16 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import xbmcgui
+. config/options $1
 
-dialog = xbmcgui.Dialog()
-ok = dialog.ok('nano', 'This is shell add-on.', "You can't use it from GUI!")
+cd $PKG_BUILD
+
+ADDON_DIR="/storage/.xbmc/addons/service.system.dcron/"
+ADDON_HOME="/storage/.xbmc/userdata/addon_data/service.system.dcron"
+
+sed -i "s|/usr/bin/vi|$ADDON_DIR/bin/nano|g" defs.h
+
+$MAKE \
+  CRONTABS=$ADDON_HOME/crontabs \
+  CRONSTAMPS=$ADDON_HOME/cronstamps \
+  SCRONTABS=$ADDON_HOME/cron.d

@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
@@ -18,7 +20,29 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import xbmcgui
+ADDON_NAME="service.system.dcron"
+ADDON_DIR="$HOME/.xbmc/addons/$ADDON_NAME"
+ADDON_HOME="$HOME/.xbmc/userdata/addon_data/$ADDON_NAME"
 
-dialog = xbmcgui.Dialog()
-ok = dialog.ok('nano', 'This is shell add-on.', "You can't use it from GUI!")
+  mkdir -p $ADDON_HOME
+
+  if [ ! -d $ADDON_HOME/crontabs ]; then
+    mkdir -p $ADDON_HOME/cron.hourly
+    mkdir -p $ADDON_HOME/cron.daily
+    mkdir -p $ADDON_HOME/cron.weekly
+    mkdir -p $ADDON_HOME/cron.monthly
+    
+    mkdir -p $ADDON_HOME/crontabs
+    mkdir -p $ADDON_HOME/cronstamps
+    mkdir -p $ADDON_HOME/cron.d
+    
+    cp $ADDON_DIR/config/root.crond $ADDON_HOME/cron.d/root
+    cp $ADDON_DIR/config/prune-cronstamps $ADDON_HOME/cron.d/
+    cp $ADDON_DIR/config/root.crontabs $ADDON_HOME/crontabs/root
+  fi
+
+  export PATH=$ADDON_DIR/bin:$PATH
+
+  if [ -z "$(pidof crond)" ]; then  
+    crond -b -l info
+  fi

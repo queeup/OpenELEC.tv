@@ -1,6 +1,9 @@
+#!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2011-2011 Gregor Fuis (gujs@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -18,7 +21,13 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import xbmcgui
+. config/options $1
 
-dialog = xbmcgui.Dialog()
-ok = dialog.ok('nano', 'This is shell add-on.', "You can't use it from GUI!")
+  mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/bin/
+  cp -Pa $PKG_BUILD/crond $ADDON_BUILD/$PKG_ADDON_ID/bin/
+  cp -Pa $PKG_BUILD/crontab $ADDON_BUILD/$PKG_ADDON_ID/bin/
+  cp -Pa $PKG_BUILD/extra/run-cron $ADDON_BUILD/$PKG_ADDON_ID/bin/
+  cp -Pa $PKG_BUILD/../nano-*/src/nano $ADDON_BUILD/$PKG_ADDON_ID/bin/
+  
+  mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/config/
+  cp -Pa $PKG_DIR/config/* $ADDON_BUILD/$PKG_ADDON_ID/config/
