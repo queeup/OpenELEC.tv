@@ -1,3 +1,4 @@
+#!/bin/sh
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
@@ -18,19 +19,28 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="xbmc-addon-xvdr"
-PKG_VERSION="d973f41"
-PKG_REV="1"
-PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/pipelka/xbmc-addon-xvdr"
-PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="zlib"
-PKG_BUILD_DEPENDS="toolchain zlib"
-PKG_PRIORITY="optional"
-PKG_SECTION="mediacenter"
-PKG_SHORTDESC="XVDR addon for XBMC"
-PKG_LONGDESC="This addon allows XBMC PVR to connect to the VDR server."
-PKG_IS_ADDON="no"
+PKG_NAME="vdr-dvbapi-plugin"
+PKG_REPO="git://github.com/Louro/vdr-dvbapi-plugin.git"
 
-PKG_AUTORECONF="no"
+echo "getting sources..."
+  if [ ! -d $PKG_NAME.git ]; then
+    git clone $PKG_REPO $PKG_NAME.git
+  fi
+
+  cd $PKG_NAME.git
+    git pull
+    GIT_REV=`git log -n1 --format=%h`
+  cd ..
+
+echo "copying sources..."
+  rm -rf $PKG_NAME-$GIT_REV
+  cp -R $PKG_NAME.git $PKG_NAME-$GIT_REV
+
+echo "cleaning sources..."
+  rm -rf $PKG_NAME-$GIT_REV/.git
+
+echo "packing sources..."
+  tar cvJf $PKG_NAME-$GIT_REV.tar.xz $PKG_NAME-$GIT_REV
+
+echo "remove temporary sourcedir..."
+  rm -rf $PKG_NAME-$GIT_REV

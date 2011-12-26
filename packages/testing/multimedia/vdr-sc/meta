@@ -18,19 +18,20 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="xbmc-addon-xvdr"
-PKG_VERSION="d973f41"
+PKG_NAME="vdr-sc"
+PKG_VERSION="603"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/pipelka/xbmc-addon-xvdr"
+PKG_SITE="http://85.17.209.13:6100/"
 PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="zlib"
-PKG_BUILD_DEPENDS="toolchain zlib"
+PKG_DEPENDS="vdr openssl"
+PKG_BUILD_DEPENDS="toolchain vdr openssl"
 PKG_PRIORITY="optional"
-PKG_SECTION="mediacenter"
-PKG_SHORTDESC="XVDR addon for XBMC"
-PKG_LONGDESC="This addon allows XBMC PVR to connect to the VDR server."
+PKG_SECTION="multimedia"
+PKG_SHORTDESC="TV"
+PKG_LONGDESC="TV"
+
 PKG_IS_ADDON="no"
 
 PKG_AUTORECONF="no"

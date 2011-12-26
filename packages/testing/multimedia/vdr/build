@@ -1,6 +1,9 @@
+#!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2011 Anthony Nash (nash.ant@gmail.com)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -18,19 +21,27 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="xbmc-addon-xvdr"
-PKG_VERSION="d973f41"
-PKG_REV="1"
-PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/pipelka/xbmc-addon-xvdr"
-PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="zlib"
-PKG_BUILD_DEPENDS="toolchain zlib"
-PKG_PRIORITY="optional"
-PKG_SECTION="mediacenter"
-PKG_SHORTDESC="XVDR addon for XBMC"
-PKG_LONGDESC="This addon allows XBMC PVR to connect to the VDR server."
-PKG_IS_ADDON="no"
+. config/options $1
 
-PKG_AUTORECONF="no"
+# vdr fails to build with LTO optimization
+  strip_lto
+  strip_gold
+
+  LDFLAGS=`echo $LDFLAGS | sed -e "s|-Wl,--as-needed||"`
+
+cd $PKG_BUILD
+
+cat > Make.config <<EOF
+PLUGINLIBDIR = /usr/lib/vdr
+VIDEODIR = /storage/videos
+CONFDIR = /storage/.config/vdr
+LOCDIR = /usr/share/locale
+LIBS += -liconv
+
+NO_KBD=yes
+VDR_USER=root
+EOF
+
+make
+make include-dir
+
