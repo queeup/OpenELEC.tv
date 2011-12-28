@@ -18,19 +18,15 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="debug"
-PKG_VERSION=""
-PKG_REV="1"
-PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="http://www.openelec.tv"
-PKG_URL=""
-PKG_DEPENDS="strace gdb mesa-demos tvdump mrxvt"
-PKG_BUILD_DEPENDS="toolchain"
-PKG_PRIORITY="optional"
-PKG_SECTION="debug"
-PKG_SHORTDESC="debug: Metapackage for installing debugging tools"
-PKG_LONGDESC="debug is a Metapackage for installing debugging tools"
-PKG_IS_ADDON="no"
+import os
+import sys
+import xbmcaddon
 
-PKG_AUTORECONF="no"
+__scriptname__ = "VDR Service"
+__author__ = "OpenELEC"
+__url__ = "http://www.openelec.tv"
+__settings__   = xbmcaddon.Addon(id='service.multimedia.vdr-addon')
+__cwd__        = __settings__.getAddonInfo('path')
+__path__       = xbmc.translatePath( os.path.join( __cwd__, 'bin', "vdr.service") )
+
+os.system(__path__)

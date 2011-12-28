@@ -3,7 +3,6 @@
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
-#      Copyright (C) 2011 Anthony Nash (nash.ant@gmail.com)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -23,25 +22,11 @@
 
 . config/options $1
 
-# vdr fails to build with LTO optimization
-  strip_lto
-  strip_gold
+VDR_DIR=`basename $BUILD/vdr-[0-9]*`
 
-  LDFLAGS=`echo $LDFLAGS | sed -e "s|-Wl,--as-needed||"`
+# dont build parallel
+  MAKEFLAGS=-j1
 
 cd $PKG_BUILD
-
-cat > Make.config <<EOF
-PLUGINLIBDIR = /usr/lib/vdr
-VIDEODIR = /storage/videos
-CONFDIR = /storage/.config/vdr
-LOCDIR = /usr/share/locale
-LIBS += -liconv
-
-NO_KBD=yes
-VDR_USER=root
-EOF
-
-make
-make include-dir
+  make VDRDIR="../$VDR_DIR" LIBDIR="." LOCALEDIR="./locale"
 

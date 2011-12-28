@@ -18,19 +18,20 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="debug"
-PKG_VERSION=""
+PKG_NAME="vdr-dynamite"
+PKG_VERSION="c0a859b"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
-PKG_SITE="http://www.openelec.tv"
-PKG_URL=""
-PKG_DEPENDS="strace gdb mesa-demos tvdump mrxvt"
-PKG_BUILD_DEPENDS="toolchain"
+PKG_SITE="http://projects.vdr-developer.org/projects/plg-dynamite"
+PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_DEPENDS="vdr udev"
+PKG_BUILD_DEPENDS="toolchain vdr udev"
 PKG_PRIORITY="optional"
-PKG_SECTION="debug"
-PKG_SHORTDESC="debug: Metapackage for installing debugging tools"
-PKG_LONGDESC="debug is a Metapackage for installing debugging tools"
+PKG_SECTION="multimedia"
+PKG_SHORTDESC="vdr-dynamite turns the dvbdevices into hotpluggable devices. They can be dynamically attached and detached while vdr is running."
+PKG_LONGDESC="This plugin turns the dvbdevices into hotpluggable devices. They can be dynamically attached and detached while vdr is running."
+
 PKG_IS_ADDON="no"
 
 PKG_AUTORECONF="no"
