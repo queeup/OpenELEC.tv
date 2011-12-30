@@ -1,0 +1,9 @@
+<settings>
+  <setting id="INADYN_START" value="false" />
+  <setting id="INADYN_SYSTEM" value="default@no-ip.com" />
+  <setting id="INADYN_UPDATE" values="1800000" />
+  <setting id="INADYN_HOST" value="" />
+  <setting id="INADYN_USER" value="" />
+  <setting id="INADYN_PWD" value="" />
+  <setting id="INADYN_DBG" value="0" />
+</settings>

@@ -22,15 +22,10 @@
 
 . config/options $1
 
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/bin
-  cp $BUILD/unrar/unrar $ADDON_BUILD/$PKG_ADDON_ID/bin
+ZIP_PKG="`echo $PKG_URL | sed 's%.*/\(.*\)$%\1%'`"
 
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
-  cp -R $BUILD/pycurl*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
+mkdir -p $BUILD/${PKG_NAME}-${PKG_VERSION}
 
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib/Crypto
-  cp -R $BUILD/pycrypto*/pycrypto.egg-info/ $ADDON_BUILD/$PKG_ADDON_ID/pylib 
-  cp -R $BUILD/pycrypto*/build/lib.linux-i686-2.7/Crypto/* $ADDON_BUILD/$PKG_ADDON_ID/pylib/Crypto
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pyload
-  cp -PR $PKG_BUILD/* $ADDON_BUILD/$PKG_ADDON_ID/pyload
+unzip $SOURCES/$1/$ZIP_PKG -d $BUILD/${PKG_NAME}-${PKG_VERSION} >/dev/null 2>&1
+mv $BUILD/${PKG_NAME}-${PKG_VERSION}/${PKG_NAME}/* $BUILD/${PKG_NAME}-${PKG_VERSION}/
+rm -rf $BUILD/${PKG_NAME}-${PKG_VERSION}/${PKG_NAME}

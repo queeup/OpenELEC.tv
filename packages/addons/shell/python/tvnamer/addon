@@ -22,15 +22,7 @@
 
 . config/options $1
 
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/bin
-  cp $BUILD/unrar/unrar $ADDON_BUILD/$PKG_ADDON_ID/bin
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
-  cp -R $BUILD/pycurl*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib/Crypto
-  cp -R $BUILD/pycrypto*/pycrypto.egg-info/ $ADDON_BUILD/$PKG_ADDON_ID/pylib 
-  cp -R $BUILD/pycrypto*/build/lib.linux-i686-2.7/Crypto/* $ADDON_BUILD/$PKG_ADDON_ID/pylib/Crypto
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pyload
-  cp -PR $PKG_BUILD/* $ADDON_BUILD/$PKG_ADDON_ID/pyload
+mkdir -p $ADDON_BUILD/$PKG_ADDON_ID
+  cp -R $PKG_BUILD/$PKG_NAME $ADDON_BUILD/$PKG_ADDON_ID
+  cp -PR $BUILD/tvdb_api*/*.py $ADDON_BUILD/$PKG_ADDON_ID/$PKG_NAME
+  rm $ADDON_BUILD/$PKG_ADDON_ID/$PKG_NAME/setup.py

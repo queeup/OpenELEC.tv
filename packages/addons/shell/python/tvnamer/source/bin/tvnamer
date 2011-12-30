@@ -20,17 +20,8 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-. config/options $1
+. /etc/profile
 
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/bin
-  cp $BUILD/unrar/unrar $ADDON_BUILD/$PKG_ADDON_ID/bin
+ADDON_DIR="$HOME/.xbmc/addons/shell.python.tvnamer"
 
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
-  cp -R $BUILD/pycurl*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib/Crypto
-  cp -R $BUILD/pycrypto*/pycrypto.egg-info/ $ADDON_BUILD/$PKG_ADDON_ID/pylib 
-  cp -R $BUILD/pycrypto*/build/lib.linux-i686-2.7/Crypto/* $ADDON_BUILD/$PKG_ADDON_ID/pylib/Crypto
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pyload
-  cp -PR $PKG_BUILD/* $ADDON_BUILD/$PKG_ADDON_ID/pyload
+python $ADDON_DIR/tvnamer/main.py $@

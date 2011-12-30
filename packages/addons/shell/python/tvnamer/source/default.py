@@ -1,5 +1,3 @@
-#!/bin/sh
-
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
@@ -20,17 +18,7 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-. config/options $1
+import xbmcgui
 
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/bin
-  cp $BUILD/unrar/unrar $ADDON_BUILD/$PKG_ADDON_ID/bin
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
-  cp -R $BUILD/pycurl*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib/Crypto
-  cp -R $BUILD/pycrypto*/pycrypto.egg-info/ $ADDON_BUILD/$PKG_ADDON_ID/pylib 
-  cp -R $BUILD/pycrypto*/build/lib.linux-i686-2.7/Crypto/* $ADDON_BUILD/$PKG_ADDON_ID/pylib/Crypto
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pyload
-  cp -PR $PKG_BUILD/* $ADDON_BUILD/$PKG_ADDON_ID/pyload
+dialog = xbmcgui.Dialog()
+ok = dialog.ok('tvnamer', 'This is shell add-on.', "You can't use it from GUI!")

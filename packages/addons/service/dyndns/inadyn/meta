@@ -1,5 +1,3 @@
-#!/bin/sh
-
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
@@ -20,17 +18,21 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-. config/options $1
+PKG_NAME="inadyn"
+PKG_VERSION="1.96.2"
+PKG_REV="0"
+PKG_ARCH="any"
+PKG_LICENSE="GPL"
+PKG_SITE="http://www.inatech.eu/inadyn/"
+PKG_URL="http://www.inatech.eu/$PKG_NAME/$PKG_NAME.v$PKG_VERSION.zip"
+PKG_DEPENDS=""
+PKG_BUILD_DEPENDS=""
+PKG_PRIORITY="optional"
+PKG_SECTION="service/dyndns"
+PKG_SHORTDESC="inadyn: is a free DynDNS client"
+PKG_LONGDESC="INADYN is a free DynDNS client. It gives the possibility to have your own fixed hostname registered on the internet, although your IP might be changing. Supports the following dynamic DNS services: dyndns.org (in all three flavors: dynamic, static, custom), freedns.afraid.org, zoneedit.com, no-ip.com"
 
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/bin
-  cp $BUILD/unrar/unrar $ADDON_BUILD/$PKG_ADDON_ID/bin
+PKG_IS_ADDON="yes"
+PKG_ADDON_TYPE="xbmc.service"
 
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
-  cp -R $BUILD/pycurl*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib/Crypto
-  cp -R $BUILD/pycrypto*/pycrypto.egg-info/ $ADDON_BUILD/$PKG_ADDON_ID/pylib 
-  cp -R $BUILD/pycrypto*/build/lib.linux-i686-2.7/Crypto/* $ADDON_BUILD/$PKG_ADDON_ID/pylib/Crypto
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pyload
-  cp -PR $PKG_BUILD/* $ADDON_BUILD/$PKG_ADDON_ID/pyload
+PKG_AUTORECONF="no"
