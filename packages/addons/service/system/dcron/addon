@@ -3,6 +3,7 @@
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2011-2011 Gregor Fuis (gujs@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -22,8 +23,11 @@
 
 . config/options $1
 
-mkdir -p $INSTALL/usr/lib/vdr
-  cp $PKG_BUILD/libvdr-xvdr.so.* $INSTALL/usr/lib/vdr
+  mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/bin/
+  cp -Pa $PKG_BUILD/crond $ADDON_BUILD/$PKG_ADDON_ID/bin/
+  cp -Pa $PKG_BUILD/crontab $ADDON_BUILD/$PKG_ADDON_ID/bin/
+  cp -Pa $PKG_BUILD/extra/run-cron $ADDON_BUILD/$PKG_ADDON_ID/bin/
+  cp -Pa $BUILD/nano-*/src/nano $ADDON_BUILD/$PKG_ADDON_ID/bin/
 
-mkdir -p $INSTALL/usr/config/vdr/plugins/xvdr
-  cp $PKG_DIR/config/allowed_hosts.conf $INSTALL/usr/config/vdr/plugins/xvdr/
+  mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/config/
+  cp -Pa $PKG_DIR/config/* $ADDON_BUILD/$PKG_ADDON_ID/config/

@@ -22,8 +22,14 @@
 
 . config/options $1
 
-mkdir -p $INSTALL/usr/lib/vdr
-  cp $PKG_BUILD/libvdr-xvdr.so.* $INSTALL/usr/lib/vdr
+cd $PKG_BUILD
 
-mkdir -p $INSTALL/usr/config/vdr/plugins/xvdr
-  cp $PKG_DIR/config/allowed_hosts.conf $INSTALL/usr/config/vdr/plugins/xvdr/
+ADDON_DIR="/storage/.xbmc/addons/service.system.dcron/"
+ADDON_HOME="/storage/.xbmc/userdata/addon_data/service.system.dcron"
+
+sed -i "s|/usr/bin/vi|$ADDON_DIR/bin/nano|g" defs.h
+
+$MAKE \
+  CRONTABS=$ADDON_HOME/crontabs \
+  CRONSTAMPS=$ADDON_HOME/cronstamps \
+  SCRONTABS=$ADDON_HOME/cron.d

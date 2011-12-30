@@ -1,8 +1,7 @@
-#!/bin/sh
-
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2011-2011 Gregor Fuis (gujs@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -20,8 +19,15 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-. config/options $1
+import os
+import sys
+import xbmcaddon
 
-mkdir -p $INSTALL/usr/lib/vdr
-  cp $PKG_BUILD/libvdr-dvbapi.so* $INSTALL/usr/lib/vdr
-  cp $PKG_BUILD/dvbapi_ca.so $INSTALL/usr/lib/vdr
+__scriptname__ = "Lightweight cron daemon"
+__author__     = "OpenELEC"
+__url__        = "http://www.openelec.tv"
+__settings__   = xbmcaddon.Addon(id='service.system.dcron')
+__cwd__        = __settings__.getAddonInfo('path')
+__path__       = xbmc.translatePath( os.path.join( __cwd__, 'bin', "dcron.service") )
+
+os.system(__path__)
