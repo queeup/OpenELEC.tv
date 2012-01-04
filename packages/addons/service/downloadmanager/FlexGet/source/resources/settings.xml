@@ -8,8 +8,8 @@
     <setting id="FLEXGET_START" type="bool" label="1020" default="false" />
     <setting id="FLEXGET_PORT" type="number" label="1021" default="5050" />
     <setting id="FLEXGET_AUTH" type="bool" label="1022" default="false" />
-    <setting id="FLEXGET_USER" type="text" label="1023" default="flexget" enable="eq(-1,true)"/>
-    <setting id="FLEXGET_PWD" type="text" label="1024" default="flexget" enable="eq(-2,true)"/>
+    <setting id="FLEXGET_USER" type="text" label="1023" default="flexget" visible="eq(-1,true)" enable="eq(-1,true)"/>
+    <setting id="FLEXGET_PWD" type="text" label="1024" default="flexget" visible="eq(-2,true)" enable="eq(-2,true)" option="hidden"/>
   </category>
 
 </settings>
