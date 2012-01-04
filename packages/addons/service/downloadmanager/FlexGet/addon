@@ -28,4 +28,4 @@ mkdir -p $ADDON_BUILD/$PKG_ADDON_ID
   chmod +x $ADDON_BUILD/$PKG_ADDON_ID/flexget_vanilla.py
 
 mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
-  cp -PR $BUILD/flexgetlib*/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
+  cp -PR $BUILD/libflexget*/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
