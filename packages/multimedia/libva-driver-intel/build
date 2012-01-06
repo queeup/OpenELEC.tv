@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
@@ -18,19 +20,15 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="libdrm"
-PKG_VERSION="2.4.30"
-PKG_REV="1"
-PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="http://dri.freedesktop.org"
-PKG_URL="http://dri.freedesktop.org/libdrm/$PKG_NAME-$PKG_VERSION.tar.bz2"
-PKG_DEPENDS="udev libpciaccess"
-PKG_BUILD_DEPENDS="toolchain libpthread-stubs udev libpciaccess"
-PKG_PRIORITY="optional"
-PKG_SECTION="graphics"
-PKG_SHORTDESC="libdrm: Userspace interface to kernel DRM services"
-PKG_LONGDESC="The userspace interface library to kernel DRM services."
-PKG_IS_ADDON="no"
+. config/options $1
 
-PKG_AUTORECONF="yes"
+cd $PKG_BUILD
+./configure --host=$TARGET_NAME \
+            --build=$HOST_NAME \
+            --prefix=/usr \
+            --enable-shared \
+            --disable-static \
+            --disable-silent-rules \
+            --with-drivers-path="/usr/lib/va" \
+
+make
