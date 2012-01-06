@@ -60,7 +60,6 @@ fi
       rm $ADDON_HOME/.config-lock
     fi
     if [ "$FLEXGET_START" = "true" ]; then
-      ln -sf $ADDON_DIR/flexget_vanilla.py $ADDON_DIR/bin/flexget
-      flexget $FLEXGET_ARG --autoreload -c $ADDON_HOME/config.yml &>$LOG_FILE
+      python $ADDON_DIR/pylib/flexget-webui.py $FLEXGET_ARG --autoreload -c $ADDON_HOME/config.yml &>$LOG_FILE
     fi
   fi

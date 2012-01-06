@@ -20,9 +20,11 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-. config/options $1
+. /etc/profile
 
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
-  cp -P $PKG_DIR/scripts/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
-  cp -PR $PKG_BUILD/flexget $ADDON_BUILD/$PKG_ADDON_ID/pylib
-  cp -PR $BUILD/libflexget*/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
+ADDON_DIR="$HOME/.xbmc/addons/service.downloadmanager.FlexGet"
+ADDON_HOME="$HOME/.xbmc/userdata/addon_data/service.downloadmanager.FlexGet"
+
+export PYTHONPATH="$PYTHONPATH:$ADDON_DIR/pylib"
+
+python $ADDON_DIR/pylib/flexget-webui.py --logfile=/var/log/flexget.log -c $ADDON_HOME/config.yml $@
