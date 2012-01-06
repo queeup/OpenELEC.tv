@@ -23,5 +23,6 @@
 . config/options $1
 
 mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
+  cp -P $PKG_DIR/scripts/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -PR $PKG_BUILD/flexget $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -PR $BUILD/libflexget*/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
