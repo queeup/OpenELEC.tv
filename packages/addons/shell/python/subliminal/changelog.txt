@@ -1,0 +1,2 @@
+2.0.0
+- initial addon based on subliminal-e7d3465
