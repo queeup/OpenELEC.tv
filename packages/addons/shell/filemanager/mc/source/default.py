@@ -18,21 +18,6 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="tvnamer"
-PKG_VERSION="422e786"
-PKG_REV="0"
-PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/dbr/tvnamer"
-PKG_URL="https://github.com/downloads/queeup/OpenELEC.tv/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="Python"
-PKG_BUILD_DEPENDS="tvdb_api"
-PKG_PRIORITY="optional"
-PKG_SECTION="shell/python"
-PKG_SHORTDESC="tvnamer: Automatic TV episode file renamer."
-PKG_LONGDESC="Automatic TV episode file renamer, uses data from thetvdb.com via tvdb_api"
-
-PKG_IS_ADDON="yes"
-PKG_ADDON_TYPE="xbmc.python.script"
-
-PKG_AUTORECONF="no"
+import os
+import sys
+import xbmcaddon
