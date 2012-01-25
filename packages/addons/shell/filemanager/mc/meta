@@ -18,20 +18,19 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="tvnamer"
-PKG_VERSION="422e786"
+PKG_NAME="mc"
+PKG_VERSION="4.8.0"
 PKG_REV="0"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/dbr/tvnamer"
-PKG_URL="https://github.com/downloads/queeup/OpenELEC.tv/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="Python"
-PKG_BUILD_DEPENDS="tvdb_api"
+PKG_SITE="http://www.midnight-commander.org/"
+PKG_URL="http://www.midnight-commander.org/downloads/$PKG_NAME-$PKG_VERSION.tar.bz2"
+PKG_DEPENDS="glib ncurses"
+PKG_BUILD_DEPENDS="toolchain gettext gpm glib ncurses"
 PKG_PRIORITY="optional"
-PKG_SECTION="shell/python"
-PKG_SHORTDESC="tvnamer: Automatic TV episode file renamer."
-PKG_LONGDESC="Automatic TV episode file renamer, uses data from thetvdb.com via tvdb_api"
-
+PKG_SECTION="shell/filemanager"
+PKG_SHORTDESC="mc: free cross-platform filemanager"
+PKG_LONGDESC="Midnight Commander - free cross-platform filemanager and clone of Norton Commander"
 PKG_IS_ADDON="yes"
 PKG_ADDON_TYPE="xbmc.python.script"
 
