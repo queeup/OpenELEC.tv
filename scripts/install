@@ -83,6 +83,6 @@ done
 
 # Project base user configs
 if [ -d $PROJECT_DIR/$PROJECT/config ]; then
-  mkdir -p $INSTALL/storage/.config
-  cp $PROJECT_DIR/$PROJECT/config/* $INSTALL/storage/.config
+  mkdir -p $INSTALL/usr/config
+  cp $PROJECT_DIR/$PROJECT/config/* $INSTALL/usr/config
 fi
