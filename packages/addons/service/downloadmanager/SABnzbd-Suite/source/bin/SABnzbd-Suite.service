@@ -81,7 +81,7 @@
 # default couchpotato values
 ################################################################################
   COUCHPOTATO_LAUNCHBROWSER="False"
-  COUCHPOTATO_VERSIONCHECK="False"
+  COUCHPOTATO_VERSIONCHECK="True"
   COUCHPOTATO_PORT="8083"
   COUCHPOTATO_USEXBMC="True"
   COUCHPOTATO_UPDATEXBMC="True"
