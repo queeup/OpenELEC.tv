@@ -247,7 +247,7 @@
   ATVCLIENT_SUPPORT="yes"
 
 # build and install IRServer IR/LCD support (yes / no)
-  IRSERVER_SUPPORT="yes"
+  IRSERVER_SUPPORT="no"
 
 # build and install CEC adapter support (yes / no)
   CEC_SUPPORT="no"
