@@ -1,0 +1,27 @@
+#!/bin/sh
+
+. /etc/profile
+
+USB2=`cat /proc/acpi/wakeup | grep USB2 | awk {'print $3}'`
+PS2K=`cat /proc/acpi/wakeup | grep PS2K | awk {'print $3}'`
+    
+case "$1" in
+  hibernate|suspend)
+    if [ "$USB2" = "*enabled" ]; then
+      echo USB2 > /proc/acpi/wakeup
+    fi
+    if [ "$PS2K" = "*enabled" ]; then
+      echo PS2K > /proc/acpi/wakeup
+    fi
+    ;;
+  thaw|resume)
+    if [ "$USB2" = "*enabled" ]; then
+      echo USB2 > /proc/acpi/wakeup
+    fi
+    if [ "$PS2K" = "*enabled" ]; then
+      echo PS2K > /proc/acpi/wakeup
+    fi
+    ;;
+  *) exit $NA
+    ;;
+esac
