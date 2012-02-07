@@ -26,7 +26,11 @@ mkdir -p $INSTALL/usr/sbin
   cp $PKG_BUILD/daemons/lircd $INSTALL/usr/sbin
 
 mkdir -p $INSTALL/etc/lirc
-  cp $PKG_BUILD/remotes/mceusb/lircd.conf.mceusb $INSTALL/etc/lirc/lircd.conf
+  if [ -f $PKG_DIR/remotes/lircd.conf]; then
+    cp $PKG_DIR/remotes/lircd.conf $INSTALL/etc/lirc
+  else
+    cp $PKG_BUILD/remotes/mceusb/lircd.conf.mceusb $INSTALL/etc/lirc/lircd.conf
+  fi
   cp $PKG_BUILD/remotes/devinput/lircd.conf.devinput $INSTALL/etc/lirc
 
 mkdir -p $INSTALL/usr/sbin
