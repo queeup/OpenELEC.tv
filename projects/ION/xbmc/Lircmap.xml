@@ -1,5 +1,5 @@
 <lircmap>
-  <remote device="Apple_A1294_macmini">
+  <remote device="AppleRemote">
     <up>KEY_UP</up>
     <down>KEY_DOWN</down>
     <left>KEY_LEFT</left>
