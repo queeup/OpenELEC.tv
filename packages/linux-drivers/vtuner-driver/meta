@@ -18,21 +18,19 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="boblightd"
-PKG_VERSION="2.0.4"
-PKG_REV="4"
+PKG_NAME="vtuner-driver"
+PKG_VERSION="9"
+PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
-PKG_SITE="http://code.google.com/p/boblight"
-PKG_URL="http://dl.dropbox.com/u/10051534/$PKG_NAME.tar.gz"
-PKG_DEPENDS="libX11 libXext libX11 libXrender Mesa"
-PKG_BUILD_DEPENDS="toolchain libX11 libXext libXrender Mesa"
+PKG_SITE="http://code.google.com/p/vtuner/"
+PKG_URL="$DISTRO_SRC/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+PKG_DEPENDS=""
+PKG_BUILD_DEPENDS="toolchain linux"
 PKG_PRIORITY="optional"
-PKG_SECTION="service/multimedia"
-PKG_SHORTDESC="boblightd: an ambilight controller."
-PKG_LONGDESC="Boblight's main purpose is to create light effects from an external input, such as a video stream.\n\nSee this thread on the Openelec forums for howto and demonstration: http://bit.ly/oe-boblight"
-
-PKG_IS_ADDON="yes"
-PKG_ADDON_TYPE="xbmc.service"
-
+PKG_SECTION="driver/dvb"
+PKG_SHORTDESC="vtuner: access DVB devices over the network."
+PKG_LONGDESC="vtuner: access DVB devices over the network."
+PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+
