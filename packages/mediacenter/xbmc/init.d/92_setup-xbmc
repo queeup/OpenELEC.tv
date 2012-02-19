@@ -106,10 +106,6 @@ EOF
     if [ -f /usr/share/xbmc/config/guisettings.xml ]; then
       cat /usr/share/xbmc/config/guisettings.xml >> $HOME/.xbmc/userdata/guisettings.xml
     fi
-    
-    if [ -f /usr/share/xbmc/config/Lircmap.xml ]; then
-      cat /usr/share/xbmc/config/Lircmap.xml >> $HOME/.xbmc/userdata/Lircmap.xml
-    fi
 
   #
   # common setup for amd and nvidia graphic
