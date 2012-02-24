@@ -20,32 +20,9 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-. /etc/profile
+. config/options $1
 
-ADDON_DIR="$HOME/.xbmc/addons/service.multimedia.hts-tvheadend"
-ADDON_HOME="$HOME/.xbmc/userdata/addon_data/service.multimedia.hts-tvheadend"
-LOG_FILE="$ADDON_HOME/service.log"
-ADDON_SETTINGS="$ADDON_HOME/settings.xml"
-XMLTV_FILE="$ADDON_DIR/bin/tv_grab_file"
-XMLTV_SETTINGS_DIR="$ADDON_HOME/xmltv"
-XMLTV_SETTINGS_FILE="$XMLTV_SETTINGS_DIR/config"
+LIBJPEG_DIR="$BUILD/libjpeg-turbo-*"
 
-if [ ! -f "$ADDON_SETTINGS" ]; then
-  cp $ADDON_DIR/settings-default.xml $ADDON_SETTINGS
-fi
-
-if [ ! -f "$XMLTV_SETTINGS_FILE" ]; then
-  mkdir -p $XMLTV_SETTINGS_DIR
-  cp $ADDON_DIR/xmltv-config $XMLTV_SETTINGS_FILE
-fi
-
-if [ ! -f "$XMLTV_FILE" ]; then
-  chmod +x $XMLTV_FILE
-fi
-
-TVHEADEND_ARG="-f -C -s -u root -g root -c $ADDON_HOME"
-
-mkdir -p $ADDON_HOME
-  if [ ! $(pidof tvheadend) ];then
-    tvheadend $TVHEADEND_ARG &>$LOG_FILE
-  fi
+mkdir -p $INSTALL/lib
+  cp -P $LIBJPEG_DIR/.libs/libjpeg.so* $INSTALL/lib
