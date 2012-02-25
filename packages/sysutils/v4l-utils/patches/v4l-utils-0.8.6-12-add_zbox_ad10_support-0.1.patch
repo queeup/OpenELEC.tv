@@ -1,18 +1,10 @@
 diff -Naur v4l-utils-0.8.3/utils/keytable/rc_keymaps/rc6_mce v4l-utils-0.8.3.patch/utils/keytable/rc_keymaps/rc6_mce
 --- v4l-utils-0.8.3/utils/keytable/rc_keymaps/rc6_mce	2011-09-29 16:58:43.791771663 +0200
 +++ v4l-utils-0.8.3.patch/utils/keytable/rc_keymaps/rc6_mce	2011-09-29 16:59:59.449760665 +0200
-@@ -60,6 +60,7 @@
- 0x800f046f KEY_MEDIA
- 0x800f0480 KEY_BRIGHTNESSDOWN
- 0x800f0481 KEY_PLAYPAUSE
-+
- #xbox360 remote
- 0x800f7400 KEY_NUMERIC_0
- 0x800f7401 KEY_NUMERIC_1
-@@ -124,3 +125,47 @@
+@@ -63,2 +63,47 @@
  0x800f7480 KEY_BRIGHTNESSDOWN
  0x800f7481 KEY_PLAYPAUSE
- 
++ 
 +Zotac AD10 Remote
 +0x8034048e KEY_POWER
 +0x8034043d KEY_POWER
