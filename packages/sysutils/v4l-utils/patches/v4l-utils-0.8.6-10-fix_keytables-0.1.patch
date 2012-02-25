@@ -19,12 +19,6 @@ diff -Naur v4l-utils-0.8.3/utils/keytable/rc_keymaps/imon_mce v4l-utils-0.8.3.pa
  0x800ff468 KEY_YELLOW
  0x800ff41d KEY_BLUE
  0x800ff40f KEY_INFO
-@@ -75,4 +75,4 @@
- 0x800ff45a KEY_SUBTITLE
- 0x800ff44d KEY_TITLE
- 0x800ff40c KEY_POWER
--0x800ff40d KEY_LEFTMETA
-+0x800ff40d KEY_PROG1
 diff -Naur v4l-utils-0.8.3/utils/keytable/rc_keymaps/imon_pad v4l-utils-0.8.3.patch/utils/keytable/rc_keymaps/imon_pad
 --- v4l-utils-0.8.3/utils/keytable/rc_keymaps/imon_pad	2011-02-09 23:04:27.000000000 +0100
 +++ v4l-utils-0.8.3.patch/utils/keytable/rc_keymaps/imon_pad	2011-04-05 17:38:46.644003338 +0200
@@ -44,25 +38,3 @@ diff -Naur v4l-utils-0.8.3/utils/keytable/rc_keymaps/imon_pad v4l-utils-0.8.3.pa
 +0x2ab195b7 KEY_PROG1
 +0x2b8395b7 KEY_TIME
 +0x289115b7 KEY_POWER
-diff -Naur v4l-utils-0.8.3/utils/keytable/rc_keymaps/kworld_plus_tv_analog v4l-utils-0.8.3.patch/utils/keytable/rc_keymaps/kworld_plus_tv_analog
---- v4l-utils-0.8.3/utils/keytable/rc_keymaps/kworld_plus_tv_analog	2011-02-09 23:04:27.000000000 +0100
-+++ v4l-utils-0.8.3.patch/utils/keytable/rc_keymaps/kworld_plus_tv_analog	2011-04-05 17:38:46.645003319 +0200
-@@ -1,5 +1,5 @@
- # table kworld_plus_tv_analog, type: UNKNOWN
--0x0c KEY_LEFTMETA
-+0x0c KEY_PROG1
- 0x16 KEY_CLOSECD
- 0x1d KEY_POWER2
- 0x00 KEY_1
-diff -Naur v4l-utils-0.8.3/utils/keytable/rc_keymaps/rc6_mce v4l-utils-0.8.3.patch/utils/keytable/rc_keymaps/rc6_mce
---- v4l-utils-0.8.3/utils/keytable/rc_keymaps/rc6_mce	2011-02-09 23:04:27.000000000 +0100
-+++ v4l-utils-0.8.3.patch/utils/keytable/rc_keymaps/rc6_mce	2011-04-05 17:38:46.801000225 +0200
-@@ -12,7 +12,7 @@
- 0x800f040a KEY_DELETE
- 0x800f040b KEY_ENTER
- 0x800f040c KEY_POWER
--0x800f040d KEY_LEFTMETA
-+0x800f040d KEY_PROG1
- 0x800f040e KEY_MUTE
- 0x800f040f KEY_INFO
- 0x800f0410 KEY_VOLUMEUP

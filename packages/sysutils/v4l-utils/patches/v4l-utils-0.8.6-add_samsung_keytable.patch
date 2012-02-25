@@ -37,7 +37,7 @@ diff -Naur v4l-utils-0.8.3/utils/keytable/rc_keymaps/samsung v4l-utils-0.8.3.pat
 diff -Naur v4l-utils-0.8.3/utils/keytable/rc_maps.cfg v4l-utils-0.8.3.patch/utils/keytable/rc_maps.cfg
 --- v4l-utils-0.8.3/utils/keytable/rc_maps.cfg	2011-02-09 23:04:27.000000000 +0100
 +++ v4l-utils-0.8.3.patch/utils/keytable/rc_maps.cfg	2011-05-26 21:05:25.944028544 +0200
-@@ -82,6 +82,7 @@
+@@ -83,6 +83,7 @@
  *	rc-alink-dtu-m           alink_dtu_m
  *	rc-imon-mce              imon_mce
  *	rc-rc6-mce               rc6_mce
