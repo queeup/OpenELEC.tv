@@ -20,15 +20,9 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-# this script is executed when userhdhomerun program is started
-  while [ -z "$(pidof userhdhomerun)" ]; do
-    usleep 200000
-  done
-  usleep 500000
+. /etc/profile
 
-# restart the services
-  killall tvheadend
-  while [ -n "$(pidof tvheadend)" ]; do
-    usleep 200000
-  done
-  tvheadend.service
+if [ $(pidof vdr.bin) ];then
+  killall vdr.bin
+fi
+
