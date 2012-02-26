@@ -20,43 +20,30 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-ADDON_NAME="driver.dvb.hdhomerun"
-ADDON_DIR="$HOME/.xbmc/addons/$ADDON_NAME"
-ADDON_HOME="$HOME/.xbmc/userdata/addon_data/$ADDON_NAME"
+. /etc/profile
 
-mkdir -p $ADDON_HOME
+ADDON_HOME="$HOME/.xbmc/userdata/addon_data/service.multimedia.vdr-addon"
+ADDON_CONFIG_DIR="$ADDON_HOME/config"
 
-if [ ! -f "$ADDON_HOME/dvbhdhomerun.sample" ]; then
-  cp $ADDON_DIR/config/* $ADDON_HOME/
-fi
+if [ -f "$ADDON_CONFIG_DIR/vdr-sleep.conf" ]; then
+  . "$ADDON_CONFIG_DIR/vdr-sleep.conf"
 
-export LD_LIBRARY_PATH=$ADDON_DIR/lib:$LD_LIBRARY_PATH
-
-if [ -z "$(pidof userhdhomerun)" ]; then
-  rm -f /tmp/dvbhdhomerun
-  [ -f $ADDON_HOME/dvbhdhomerun ] && ln -s $ADDON_HOME/dvbhdhomerun /tmp/dvbhdhomerun
-
-  modprobe dvb_hdhomerun
-  modprobe dvb_hdhomerun_fe
-
-  mkdir -p /var/log/
-  rm -f /var/log/dvbhdhomerun.log
-
-  cd $ADDON_DIR/bin
-  userhdhomerun -f
-  sh $ADDON_HOME/userhdhomerun-started.sh >/dev/null 2>&1 &
-
-(
-  sleep 3
-
-  sn_old="dummy"
-  [ -f $ADDON_HOME/serial-number.txt ] && sn_old=$(cat $ADDON_HOME/serial-number.txt)
-
-  sn_new=$(grep "Name of device: " /var/log/dvbhdhomerun.log)
-
-  if [ "$sn_new" != "$sn_old" ]; then
-    grep "Name of device: " /var/log/dvbhdhomerun.log >$ADDON_HOME/serial-number.txt
+  if [ ! "$REMOVE_MODULES" == "" ] ; then
+    case "$1" in
+      hibernate|suspend)
+        vdr.stop
+        for module in $REMOVE_MODULES ; do
+          rmmod -w $module
+        done
+        ;;
+      thaw|resume)
+        for module in $REMOVE_MODULES ; do
+          modprobe $module
+        done
+        xbmc-send --host=127.0.0.1 -a "XBMC.RunScript(service.multimedia.vdr-addon)" &
+        ;;
+      *) exit $NA
+        ;;
+    esac
   fi
-)&
-
 fi
