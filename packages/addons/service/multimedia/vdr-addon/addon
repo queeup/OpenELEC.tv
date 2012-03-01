@@ -2,7 +2,7 @@
 
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
@@ -33,10 +33,12 @@ mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/config
   cp $BUILD/vdr-[0-9]*/sources.conf $ADDON_BUILD/$PKG_ADDON_ID/config
   cp $BUILD/vdr-[0-9]*/svdrphosts.conf $ADDON_BUILD/$PKG_ADDON_ID/config
   echo '0.0.0.0/0' >> $ADDON_BUILD/$PKG_ADDON_ID/config/svdrphosts.conf
+  cp -PR $PKG_DIR/config/vdr-sleep.conf $ADDON_BUILD/$PKG_ADDON_ID/config
 
 mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/plugin
   cp -PR $BUILD/vdr-plugin-xvdr-*/libvdr*.so.* $ADDON_BUILD/$PKG_ADDON_ID/plugin
   cp -PR $BUILD/vdr-dynamite-*/libvdr*.so.* $ADDON_BUILD/$PKG_ADDON_ID/plugin
+  cp -PR $BUILD/iptv-*/libvdr*.so.* $ADDON_BUILD/$PKG_ADDON_ID/plugin
   cp -PR $BUILD/wirbelscan-*/libvdr*.so.* $ADDON_BUILD/$PKG_ADDON_ID/plugin
   cp -PR $BUILD/vdr-plugin-dvbapi-*/libvdr*.so.* $ADDON_BUILD/$PKG_ADDON_ID/plugin
   cp -PR $BUILD/vdr-sc-*/libvdr*.so.* $ADDON_BUILD/$PKG_ADDON_ID/plugin

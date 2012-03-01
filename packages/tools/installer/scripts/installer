@@ -2,7 +2,7 @@
 
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with OpenELEC; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
@@ -189,6 +189,12 @@ do_install_quick() {
         INSTALL_DEVICE=$(cat "$TMPDIR/device_for_install")
 
         prompt_gpt
+        prompt_ssh
+
+        EXTLINUX_SSH=""
+        if [ "$SSH" = "1" ]; then
+          EXTLINUX_SSH="ssh"
+        fi
 
         # remove all partitions
           msg_progress_install "1" "get all partitions $INSTALL_DEVICE"
@@ -267,7 +273,7 @@ do_install_quick() {
             echo " " >> $TMPDIR/part1/extlinux.conf
             echo "LABEL linux" >> $TMPDIR/part1/extlinux.conf
             echo " KERNEL /KERNEL" >> $TMPDIR/part1/extlinux.conf
-            echo " APPEND boot=LABEL=$DISKLABEL_SYSTEM disk=LABEL=$DISKLABEL_STORAGE $EXTLINUX_PARAMETERS quiet" >> $TMPDIR/part1/extlinux.conf
+            echo " APPEND boot=LABEL=$DISKLABEL_SYSTEM disk=LABEL=$DISKLABEL_STORAGE $EXTLINUX_PARAMETERS $EXTLINUX_SSH quiet" >> $TMPDIR/part1/extlinux.conf
             sync
 
         # umount system partition, remove mountpoint
@@ -364,6 +370,21 @@ prompt_gpt() {
         GPT="1"
     else
         GPT="0"
+    fi
+}
+
+prompt_ssh() {
+  # Prompt for SSH enabling
+  # usage:    prompt_ssh
+  # uses:
+  # provides: SSH
+    MSG_TITLE="\Z1[ Enable SSH Server on start ]\Zn"
+    MSG_DETAIL="Enable SSH server per default.\n...todo...."
+    DIALOG_OPTIONS="--defaultno"
+    if dialog --colors --backtitle "$BACKTITLE" --title "$MSG_TITLE" $DIALOG_OPTIONS --yesno "$MSG_DETAIL" 0 0; then
+        SSH="1"
+    else
+        SSH="0"
     fi
 }
 
@@ -532,7 +553,7 @@ do_poweroff() {
 
 # setup needed variables
   BETA="yes"
-  INSTALLER_VERSION="0.2.5"
+  INSTALLER_VERSION="0.2.6"
   OS_VERSION=$(lsb_release)
   BACKTITLE="OpenELEC Installer $INSTALLER_VERSION - $OS_VERSION"
 
