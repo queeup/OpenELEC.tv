@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="subliminal"
-PKG_VERSION="35bf0b8"
+PKG_VERSION="d812af8"
 PKG_REV="0"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
