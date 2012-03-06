@@ -18,23 +18,20 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="subliminal"
-<<<<<<< HEAD
-PKG_VERSION="e8ba65e"
-=======
-PKG_VERSION="bef04df"
->>>>>>> queeup
+PKG_NAME="rtmpdump"
+PKG_VERSION="b627335"
 PKG_REV="0"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/Diaoul/subliminal"
-PKG_URL="https://github.com/downloads/queeup/OpenELEC.tv/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="Python"
-PKG_BUILD_DEPENDS="libsubliminal"
+PKG_SITE="http://rtmpdump.mplayerhq.hu/"
+#PKG_URL="http://rtmpdump.mplayerhq.hu/download/$PKG_NAME-$PKG_VERSION.tgz"
+PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_DEPENDS="zlib openssl"
+PKG_BUILD_DEPENDS="toolchain zlib openssl"
 PKG_PRIORITY="optional"
-PKG_SECTION="shell/python"
-PKG_SHORTDESC="subliminal: Python module to search and download subtitles."
-PKG_LONGDESC="subliminal: Python module to search and download subtitles."
+PKG_SECTION="shell/multimedia"
+PKG_SHORTDESC="rtmpdump: a toolkit for RTMP streams."
+PKG_LONGDESC="rtmpdump is a toolkit for RTMP streams. All forms of RTMP are supported, including rtmp://, rtmpt://, rtmpe://, rtmpte://, and rtmps://."
 
 PKG_IS_ADDON="yes"
 PKG_ADDON_TYPE="xbmc.python.script"

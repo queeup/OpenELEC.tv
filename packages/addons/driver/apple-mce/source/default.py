@@ -18,25 +18,15 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="subliminal"
-<<<<<<< HEAD
-PKG_VERSION="e8ba65e"
-=======
-PKG_VERSION="bef04df"
->>>>>>> queeup
-PKG_REV="0"
-PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/Diaoul/subliminal"
-PKG_URL="https://github.com/downloads/queeup/OpenELEC.tv/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="Python"
-PKG_BUILD_DEPENDS="libsubliminal"
-PKG_PRIORITY="optional"
-PKG_SECTION="shell/python"
-PKG_SHORTDESC="subliminal: Python module to search and download subtitles."
-PKG_LONGDESC="subliminal: Python module to search and download subtitles."
+import os
+import sys
+import xbmcaddon
 
-PKG_IS_ADDON="yes"
-PKG_ADDON_TYPE="xbmc.python.script"
+__scriptname__ = "Apple Remote MCE Remote driver"
+__author__ = "queeup"
+__url__ = ""
+__settings__ = xbmcaddon.Addon(id='driver.remote.apple-mce')
+__cwd__ = __settings__.getAddonInfo('path')
+__path__ = xbmc.translatePath(os.path.join(__cwd__, 'bin', "apple-mce.service"))
 
-PKG_AUTORECONF="no"
+os.system(__path__)

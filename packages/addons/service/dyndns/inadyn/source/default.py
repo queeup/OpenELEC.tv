@@ -20,4 +20,9 @@
 
 import xbmc, time, os, subprocess
 
+<<<<<<< HEAD
 os.system("inadyn.service")
+=======
+subprocess.Popen("inadyn.service", shell=True, close_fds=True)
+
+>>>>>>> queeup

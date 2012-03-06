@@ -18,25 +18,21 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="subliminal"
-<<<<<<< HEAD
-PKG_VERSION="e8ba65e"
-=======
-PKG_VERSION="bef04df"
->>>>>>> queeup
+PKG_NAME="apple-mce"
+PKG_VERSION="2.0"
 PKG_REV="0"
 PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/Diaoul/subliminal"
-PKG_URL="https://github.com/downloads/queeup/OpenELEC.tv/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="Python"
-PKG_BUILD_DEPENDS="libsubliminal"
+PKG_LICENSE="WTFPL"
+PKG_SITE=""
+PKG_URL=""
+PKG_DEPENDS=""
+PKG_BUILD_DEPENDS="toolchain"
 PKG_PRIORITY="optional"
-PKG_SECTION="shell/python"
-PKG_SHORTDESC="subliminal: Python module to search and download subtitles."
-PKG_LONGDESC="subliminal: Python module to search and download subtitles."
+PKG_SECTION="driver/remote"
+PKG_SHORTDESC="apple-mce: a driver to add support for Apple Remote with MCE IR receiver"
+PKG_LONGDESC="apple-mce is a driver to add support for Apple Remote with MCE IR receiver.."
 
 PKG_IS_ADDON="yes"
-PKG_ADDON_TYPE="xbmc.python.script"
+PKG_ADDON_TYPE="xbmc.service"
 
 PKG_AUTORECONF="no"
