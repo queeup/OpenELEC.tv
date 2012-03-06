@@ -18,7 +18,21 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import xbmc, time, os, subprocess
+PKG_NAME="apple-mce"
+PKG_VERSION="2.0"
+PKG_REV="0"
+PKG_ARCH="any"
+PKG_LICENSE="WTFPL"
+PKG_SITE=""
+PKG_URL=""
+PKG_DEPENDS=""
+PKG_BUILD_DEPENDS="toolchain"
+PKG_PRIORITY="optional"
+PKG_SECTION="driver/remote"
+PKG_SHORTDESC="apple-mce: a driver to add support for Apple Remote with MCE IR receiver"
+PKG_LONGDESC="apple-mce is a driver to add support for Apple Remote with MCE IR receiver.."
 
-subprocess.Popen("inadyn.service", shell=True, close_fds=True)
+PKG_IS_ADDON="yes"
+PKG_ADDON_TYPE="xbmc.service"
 
+PKG_AUTORECONF="no"

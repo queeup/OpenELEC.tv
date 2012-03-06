@@ -18,7 +18,15 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import xbmc, time, os, subprocess
+import os
+import sys
+import xbmcaddon
 
-subprocess.Popen("inadyn.service", shell=True, close_fds=True)
+__scriptname__ = "Apple Remote MCE Remote driver"
+__author__ = "queeup"
+__url__ = ""
+__settings__ = xbmcaddon.Addon(id='driver.remote.apple-mce')
+__cwd__ = __settings__.getAddonInfo('path')
+__path__ = xbmc.translatePath(os.path.join(__cwd__, 'bin', "apple-mce.service"))
 
+os.system(__path__)

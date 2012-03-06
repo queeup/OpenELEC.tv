@@ -18,7 +18,7 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import xbmc, time, os, subprocess
+import xbmcgui
 
-subprocess.Popen("inadyn.service", shell=True, close_fds=True)
-
+dialog = xbmcgui.Dialog()
+ok = dialog.ok('rtmpdump', 'This is shell add-on.', "You can't use it from GUI!")

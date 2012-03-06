@@ -18,7 +18,6 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import xbmc, time, os, subprocess
+import subprocess
 
-subprocess.Popen("inadyn.service", shell=True, close_fds=True)
-
+subprocess.Popen("phillips-mce.service", shell=True, close_fds=True)

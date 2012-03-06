@@ -18,7 +18,22 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import xbmc, time, os, subprocess
+PKG_NAME="rtmpdump"
+PKG_VERSION="b627335"
+PKG_REV="0"
+PKG_ARCH="any"
+PKG_LICENSE="GPL"
+PKG_SITE="http://rtmpdump.mplayerhq.hu/"
+#PKG_URL="http://rtmpdump.mplayerhq.hu/download/$PKG_NAME-$PKG_VERSION.tgz"
+PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_DEPENDS="zlib openssl"
+PKG_BUILD_DEPENDS="toolchain zlib openssl"
+PKG_PRIORITY="optional"
+PKG_SECTION="shell/multimedia"
+PKG_SHORTDESC="rtmpdump: a toolkit for RTMP streams."
+PKG_LONGDESC="rtmpdump is a toolkit for RTMP streams. All forms of RTMP are supported, including rtmp://, rtmpt://, rtmpe://, rtmpte://, and rtmps://."
 
-subprocess.Popen("inadyn.service", shell=True, close_fds=True)
+PKG_IS_ADDON="yes"
+PKG_ADDON_TYPE="xbmc.python.script"
 
+PKG_AUTORECONF="no"
