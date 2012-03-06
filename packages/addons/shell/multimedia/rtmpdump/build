@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
@@ -18,7 +20,26 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import xbmc, time, os, subprocess
+.. config/options $1
 
-subprocess.Popen("inadyn.service", shell=True, close_fds=True)
+cd $PKG_BUILD
 
+make prefix=/usr \
+     incdir=/usr/include/librtmp \
+     libdir=/usr/lib \
+     mandir=/usr/share/man \
+     CC="$CC" \
+     LD="$LD" \
+     AR="$AR" \
+     CRYPTO="OPENSSL" \
+     XCFLAGS="$CFLAGS $LDFLAGS"
+
+$MAKEINSTALL prefix=/usr \
+             incdir=/usr/include/librtmp \
+             libdir=/usr/lib \
+             mandir=/usr/share/man \
+             CC="$CC" \
+             LD="$LD" \
+             AR="$AR" \
+             CRYPTO="OPENSSL" \
+             XCFLAGS="$CFLAGS $LDFLAGS"

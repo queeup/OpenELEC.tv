@@ -2,6 +2,7 @@
 
 . /etc/profile
 
+<<<<<<< HEAD
 USB2=`cat /proc/acpi/wakeup | grep USB2 | awk {'print $3}'`
 PS2K=`cat /proc/acpi/wakeup | grep PS2K | awk {'print $3}'`
     
@@ -25,3 +26,9 @@ case "$1" in
   *) exit $NA
     ;;
 esac
+=======
+ADDON_DIR="$HOME/.xbmc/addons/driver.remote.apple-mce"
+
+sleep 1 && \
+ir-keytable -w $ADDON_DIR/rc_keymaps/apple_mce &
+>>>>>>> queeup
