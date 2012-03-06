@@ -18,6 +18,7 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import os
-import sys
-import xbmcaddon
+import xbmcgui
+
+dialog = xbmcgui.Dialog()
+ok = dialog.ok('htop', 'This is shell add-on.', "You can't use it from GUI!")

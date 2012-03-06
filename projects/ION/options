@@ -154,14 +154,14 @@
   DVDCSS_SUPPORT="yes"
 
 # build and install with BluRay support (yes / no)
-  BLURAY_SUPPORT="yes"
+  BLURAY_SUPPORT="no"
 
 # additional drivers to install:
 # AF9035:           Afa Technologies Inc. AF9035A USB DVB Device
 # asix-ax887xx:     Asix AX887xx USB LAN Driver
 # Space separated list is supported,
 # e.g. ADDITIONAL_DRIVERS="asix-ax887xx AF9035"
-  ADDITIONAL_DRIVERS="asix-ax887xx"
+  ADDITIONAL_DRIVERS=""
   if [ "$PVR" = yes ]; then
     ADDITIONAL_DRIVERS="$ADDITIONAL_DRIVERS AF9035 A867 aver_h826d RTL2832 hdhomerun-driver vtuner-driver"
   fi
@@ -170,7 +170,7 @@
   NETWORK="yes"
 
 # build and install bluetooth support (yes / no)
-  BLUETOOTH_SUPPORT="yes"
+  BLUETOOTH_SUPPORT="no"
 
 # build and install with XBMC webfrontend (yes / no)
   WEBSERVER="yes"
@@ -250,13 +250,13 @@
   ATVCLIENT_SUPPORT="no"
 
 # build and install IRServer IR/LCD support (yes / no)
-  IRSERVER_SUPPORT="yes"
+  IRSERVER_SUPPORT="no"
 
 # build and install Joystick support (yes / no)
   JOYSTICK_SUPPORT="yes"
 
 # build and install CEC adapter support (yes / no)
-  CEC_SUPPORT="yes"
+  CEC_SUPPORT="no"
 
 # LCD driver to Use - Possible drivers are ( Comma seperated:
 # bayrad,CFontz,CFontz633,CFontzPacket,curses,CwLnx,
@@ -269,7 +269,7 @@
 # 'all' compiles all drivers;
 # 'all,!xxx,!yyy' de-selects previously selected drivers
 # "none" for disable LCD support
-  LCD_DRIVER="irtrans,imon,imonlcd,mdm166a,MtxOrb"
+  LCD_DRIVER="none"
 
 # additional Firmware to use (dvb-firmware, misc-firmware, wlan-firmware)
 # Space separated list is supported,

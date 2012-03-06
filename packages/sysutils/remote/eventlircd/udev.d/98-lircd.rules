@@ -8,8 +8,6 @@ ACTION!="add|remove", GOTO="end"
 KERNEL=="hiddev[0-9]*", SUBSYSTEM=="usb",  SUBSYSTEMS=="usb", GOTO="begin"
 KERNEL=="lirc[0-9]*",   SUBSYSTEM=="lirc", SUBSYSTEMS=="i2c", GOTO="begin"
 KERNEL=="lirc[0-9]*",   SUBSYSTEM=="lirc", SUBSYSTEMS=="usb", GOTO="begin"
-KERNEL=="lirc[0-9]*",   SUBSYSTEM=="lirc", SUBSYSTEMS=="platform", GOTO="begin"
-KERNEL=="lirc[0-9]*",   SUBSYSTEM=="lirc", SUBSYSTEMS=="pnp", GOTO="begin"
 GOTO="end"
 LABEL="begin"
 
@@ -30,11 +28,24 @@ SUBSYSTEMS=="usb", GOTO="begin-usb"
 GOTO="end-usb"
 LABEL="begin-usb"
 
-ENV{ID_USB_INTERFACES}=="", IMPORT{builtin}="usb_id"
+ENV{ID_USB_INTERFACES}=="", IMPORT{program}="usb_id --export %p"
 
 ENV{ID_VENDOR_ID}=="0fe9", ENV{ID_MODEL_ID}=="9010", \
-  ENV{lircd_driver}="dvico", \
-  ENV{lircd_conf}="/etc/lirc/lircd.conf"
+  ENV{lircd_driver}="dvicoo", \
+  ENV{lircd_conf}="/etc/lirc/dvicoo-lircd.conf"
+
+ENV{ID_VENDOR_ID}=="0471", ENV{ID_MODEL_ID}=="0617", \
+  ENV{lircd_driver}="srm7500libusb", \
+  ENV{lircd_conf}="/etc/lirc/philips-srm-7500-lircd.conf"
+
+ENV{ID_VENDOR_ID}=="0b48", ENV{ID_MODEL_ID}=="2003", \
+  ENV{lircd_driver}="default", \
+  ENV{lircd_conf}="/etc/lirc/ttusbir-lircd.conf" 
+
+ENV{ID_VENDOR_ID}=="0419", ENV{ID_MODEL_ID}=="0001", \
+  ENV{lircd_driver}="samsung", \
+  ENV{lircd_conf}="/etc/lirc/samsung-lircd.conf"
+
 
 # Enable wake-on-usb for the USB remotes.
 ENV{lircd_driver}=="?*", ENV{lircd_conf}=="?*", RUN+="wakeup_enable"

@@ -1,0 +1,14 @@
+diff -Naur FlexGet-1.0r2558/flexget/ui/__init__.py FlexGet-1.0r2558.patch/flexget/ui/__init__.py
+--- FlexGet-1.0r2558/flexget/ui/__init__.py	2011-08-06 20:29:14.000000000 +0300
++++ FlexGet-1.0r2558.patch/flexget/ui/__init__.py	2011-12-19 23:58:22.521024575 +0200
+@@ -34,6 +34,9 @@
+         sys.exit(1)
+ 
+     log_level = logging.getLevelName(options.loglevel.upper())
+-    logger.start(os.path.join(manager.config_base, 'flexget.log'), log_level)
++    log_file = os.path.expanduser(manager.options.logfile)
++    if not os.path.isabs(log_file):
++        log_file = os.path.join(manager.config_base, log_file)
++    logger.start(log_file, log_level)
+ 
+     flexget.ui.webui.start(manager)

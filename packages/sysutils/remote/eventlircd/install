@@ -33,3 +33,7 @@ mkdir -p $INSTALL/lib/udev
 
 mkdir -p $INSTALL/etc/eventlircd.d
   cp $PKG_DIR/evmap/*.evmap $INSTALL/etc/eventlircd.d
+
+mkdir -p $INSTALL/etc/lirc
+  cp $PKG_DIR/lircd.conf/* $INSTALL/etc/lirc
+

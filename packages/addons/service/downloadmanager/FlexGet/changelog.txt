@@ -1,0 +1,5 @@
+1.0r2630
+- updated flexget
+
+1.0r2558
+- initial version of flexget for OpenElec 2.0

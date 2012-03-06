@@ -22,7 +22,7 @@
 
 . config/options $1
 
-cd $PKG_BUILD/librtmp
+cd $PKG_BUILD
 
 make prefix=/usr \
      incdir=/usr/include/librtmp \

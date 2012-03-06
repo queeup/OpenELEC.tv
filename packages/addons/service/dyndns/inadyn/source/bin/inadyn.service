@@ -1,0 +1,55 @@
+#!/bin/sh
+
+################################################################################
+#      This file is part of OpenELEC - http://www.openelec.tv
+#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#
+#  This Program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2, or (at your option)
+#  any later version.
+#
+#  This Program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with OpenELEC.tv; see the file COPYING.  If not, write to
+#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  http://www.gnu.org/copyleft/gpl.html
+################################################################################
+
+ADDON_DIR="$HOME/.xbmc/addons/service.dyndns.inadyn"
+ADDON_HOME="$HOME/.xbmc/userdata/addon_data/service.dyndns.inadyn"
+LOG_FILE="$ADDON_HOME/service.log"
+
+mkdir -p $ADDON_HOME
+OPENELEC_SETTINGS="$ADDON_HOME/settings.xml"
+
+if [ ! -f "$OPENELEC_SETTINGS" ]; then
+  cp $ADDON_DIR/settings.xml $OPENELEC_SETTINGS
+fi
+
+INADYN_START=`grep INADYN_START $OPENELEC_SETTINGS | awk '{print $3 }' | sed -e "s,value=,," -e "s,\",,g"`
+INADYN_SYSTEM=`grep INADYN_SYSTEM $OPENELEC_SETTINGS | awk '{print $3 }' | sed -e "s,value=,," -e "s,\",,g"`
+INADYN_UPDATE=`grep INADYN_UPDATE $OPENELEC_SETTINGS | awk '{print $3 }' | sed -e "s,value=,," -e "s,\",,g"`
+INADYN_HOST=`grep INADYN_HOST $OPENELEC_SETTINGS | awk '{print $3 }' | sed -e "s,value=,," -e "s,\",,g"`
+INADYN_USER=`grep INADYN_USER $OPENELEC_SETTINGS | awk '{print $3 }' | sed -e "s,value=,," -e "s,\",,g"`
+INADYN_PWD=`grep INADYN_PWD $OPENELEC_SETTINGS | awk '{print $3 }' | sed -e "s,value=,," -e "s,\",,g"`
+INADYN_DBG=`grep INADYN_DBG $OPENELEC_SETTINGS | awk '{print $3 }' | sed -e "s,value=,," -e "s,\",,g"`
+
+INADYN_ARG="$INADYN_ARG --dyndns_system $INADYN_SYSTEM"
+INADYN_ARG="$INADYN_ARG --update_period $INADYN_UPDATE" 
+INADYN_ARG="$INADYN_ARG --alias $INADYN_HOST"
+INADYN_ARG="$INADYN_ARG --username $INADYN_USER"
+INADYN_ARG="$INADYN_ARG --password $INADYN_PWD"
+INADYN_ARG="$INADYN_ARG --log_file /var/log/inadyn.log"
+INADYN_ARG="$INADYN_ARG --verbose $INADYN_DBG"
+INADYN_ARG="$INADYN_ARG --background"
+
+if [ ! $(pidof inadyn) ];then
+  if [ "$INADYN_START" = "true" ]; then
+    inadyn $INADYN_ARG &>$LOG_FILE
+  fi
+fi
