@@ -1,8 +1,7 @@
-#!/bin/sh
-
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2011-2011 Gregor Fuis (gujs@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -20,8 +19,19 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-. config/options
-
-mkdir -p $INSTALL/usr/bin
-  cp -P $PKG_BUILD/w_scan $INSTALL/usr/bin
-
+PKG_NAME="pcscd-addon"
+PKG_VERSION="2.0"
+PKG_REV="1"
+PKG_ARCH="any"
+PKG_LICENSE="GPL"
+PKG_SITE="http://www.openelec.tv"
+PKG_URL=""
+PKG_DEPENDS=""
+PKG_BUILD_DEPENDS="toolchain pcsc-lite libusb libccid"
+PKG_PRIORITY="optional"
+PKG_SECTION="service/system"
+PKG_SHORTDESC="Middleware to access a smart card using SCard API (PC/SC)"
+PKG_LONGDESC="Middleware to access a smart card using SCard API (PC/SC)"
+PKG_IS_ADDON="yes"
+PKG_ADDON_TYPE="xbmc.service"
+PKG_AUTORECONF="no"

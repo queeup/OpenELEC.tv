@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
@@ -18,19 +20,20 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="grep"
-PKG_VERSION="2.10"
-PKG_REV="1"
-PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="http://www.gnu.org/software/grep/"
-PKG_URL="ftp://sunsite.cnlab-switch.ch/mirror/gnu/grep/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="$ICONV pcre"
-PKG_BUILD_DEPENDS="toolchain $ICONV pcre"
-PKG_PRIORITY="optional"
-PKG_SECTION="system"
-PKG_SHORTDESC="grep: This is GNU grep, the fastest grep in the west"
-PKG_LONGDESC="GNU grep is based on a fast lazy-state deterministic matcher (about twice as fast as stock Unix egrep) hybridized with a Boyer-Moore-Gosper search for a fixed string that eliminates impossible text from being considered by the full regexp matcher without necessarily having to look at every character. The result is typically many times faster than Unix grep or egrep."
-PKG_IS_ADDON="no"
+. config/options $1
 
-PKG_AUTORECONF="no"
+cd $PKG_BUILD
+
+PCSCD_ADDON_DIR="/storage/.xbmc/addons/service.system.pcscd-addon"
+
+./configure --host=$TARGET_NAME \
+            --build=$HOST_NAME \
+            --prefix=/usr \
+            --sysconfdir=/etc \
+            --enable-shared \
+            --disable-static \
+            --disable-libudev \
+            --enable-libusb \
+            --enable-usbdropdir=$PCSCD_ADDON_DIR/drivers
+
+$MAKEINSTALL
