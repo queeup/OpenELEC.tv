@@ -38,7 +38,11 @@ cd $PKG_BUILD
             --disable-introspection \
             --with-authfw=shadow \
             --with-os-type=redhat \
+<<<<<<< HEAD
+            --with-expat=$ROOT/$TOOLCHAIN \
+=======
             --with-expat=$SYSROOT_PREFIX/usr \
+>>>>>>> upstream/master
 
 make
 
