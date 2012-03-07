@@ -80,9 +80,3 @@ for i in `sed -n "s/^\([^#].*\)=\".*$/\1/p" $PROJECT_DIR/$PROJECT/options | grep
   eval val=\$$i
   echo "STAMP_$i=\"$val"\" >> $STAMP
 done
-
-# Project base user configs
-if [ -d $PROJECT_DIR/$PROJECT/config ]; then
-  mkdir -p $INSTALL/usr/config
-  cp $PROJECT_DIR/$PROJECT/config/* $INSTALL/usr/config
-fi
