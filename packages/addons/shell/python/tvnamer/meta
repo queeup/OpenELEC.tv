@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="tvnamer"
-PKG_VERSION="4b48eb5"
+PKG_VERSION="df4819e"
 PKG_REV="0"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
