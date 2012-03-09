@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
@@ -18,19 +20,13 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="libXinerama"
-PKG_VERSION="1.1.2"
-PKG_REV="1"
-PKG_ARCH="any"
-PKG_LICENSE="OSS"
-PKG_SITE="http://www.X.org"
-PKG_URL="http://xorg.freedesktop.org/archive/individual/lib/$PKG_NAME-$PKG_VERSION.tar.bz2"
-PKG_DEPENDS="libXext"
-PKG_BUILD_DEPENDS="toolchain util-macros xineramaproto libXext"
-PKG_PRIORITY="optional"
-PKG_SECTION="x11/lib"
-PKG_SHORTDESC="libxft: X FreeType library"
-PKG_LONGDESC="X FreeType library"
-PKG_IS_ADDON="no"
+. /etc/profile
 
-PKG_AUTORECONF="yes"
+LOCKDIR="/var/lock/"
+LOCKFILE="transmission.disabled"
+
+if [ "$(pidof transmission-daemon)" ];then
+  mkdir -p "$LOCKDIR"
+  touch "$LOCKDIR/$LOCKFILE"
+  killall -9 transmission-daemon
+fi
