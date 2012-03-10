@@ -88,18 +88,30 @@ fi
       0)
         if [ ! $(pidof console-kit-daemon) ]; then
           touch "$LOCKDIR/$LOCKFILE"
+          # hack: execute addons stop scripts
+          for i in `find $HOME/.xbmc/addons/*/init.d -name *.stop -type f`; do
+            sh $i
+          done
           poweroff -f
         fi
         ;;
       64)
         if [ ! $(pidof console-kit-daemon) ]; then
           touch "$LOCKDIR/$LOCKFILE"
+          # hack: execute addons stop scripts
+          for i in `find $HOME/.xbmc/addons/*/init.d -name *.stop -type f`; do
+            sh $i
+          done
           poweroff -f
         fi
         ;;
       66)
         if [ ! $(pidof console-kit-daemon) ]; then
           touch "$LOCKDIR/$LOCKFILE"
+          # hack: execute addons stop scripts
+          for i in `find $HOME/.xbmc/addons/*/init.d -name *.stop -type f`; do
+            sh $i
+          done
           reboot
         fi
         ;;

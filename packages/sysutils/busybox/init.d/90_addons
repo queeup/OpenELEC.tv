@@ -18,6 +18,13 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-import os
-import sys
-import xbmcaddon
+#
+# starting addons
+#
+# runlevels: openelec, textmode
+
+progress "starting addons"
+  # hack: execute addons start scripts
+  for i in `find $HOME/.xbmc/addons/*/init.d -name *.start -type f`; do
+    sh $i
+  done
