@@ -25,6 +25,7 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
+<<<<<<< HEAD
 . config/options $1
 
 ZIP_PKG="`echo $PKG_URL | sed 's%.*/\(.*\)$%\1%'`"
@@ -34,3 +35,21 @@ mkdir -p $BUILD/${PKG_NAME}-${PKG_VERSION}
 unzip $SOURCES/$1/$ZIP_PKG -d $BUILD/${PKG_NAME}-${PKG_VERSION} >/dev/null 2>&1
 mv $BUILD/${PKG_NAME}-${PKG_VERSION}/${PKG_NAME}/* $BUILD/${PKG_NAME}-${PKG_VERSION}/
 rm -rf $BUILD/${PKG_NAME}-${PKG_VERSION}/${PKG_NAME}
+=======
+PKG_NAME="dcron"
+PKG_VERSION="4.5"
+PKG_REV="1"
+PKG_ARCH="any"
+PKG_LICENSE="GPL"
+PKG_SITE="http://www.jimpryor.net/linux/dcron.html"
+PKG_URL="http://www.jimpryor.net/linux/releases/${PKG_NAME}-${PKG_VERSION}.tar.gz"
+PKG_DEPENDS=""
+PKG_BUILD_DEPENDS="toolchain nano"
+PKG_PRIORITY="optional"
+PKG_SECTION="service/system"
+PKG_SHORTDESC="This lightweight cron daemon aims to be simple and secure, with just enough features to stay useful."
+PKG_LONGDESC="This lightweight cron daemon aims to be simple and secure, with just enough features to stay useful."
+PKG_IS_ADDON="yes"
+PKG_ADDON_TYPE="xbmc.service"
+PKG_AUTORECONF="no"
+>>>>>>> upstream/master
