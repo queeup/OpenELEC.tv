@@ -18,20 +18,18 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="vdr-sc"
-PKG_VERSION="605"
+PKG_NAME="libpng"
+PKG_VERSION="1.2.47"
 PKG_REV="1"
 PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="http://85.17.209.13:6100/"
-PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="vdr openssl"
-PKG_BUILD_DEPENDS="toolchain vdr openssl"
+PKG_LICENSE="OSS"
+PKG_SITE="http://www.libpng.org/"
+PKG_URL="$SOURCEFORGE_SRC/libpng/$PKG_NAME-$PKG_VERSION.tar.bz2"
+PKG_DEPENDS="zlib"
+PKG_BUILD_DEPENDS="toolchain zlib"
 PKG_PRIORITY="optional"
-PKG_SECTION="multimedia"
-PKG_SHORTDESC="TV"
-PKG_LONGDESC="TV"
-
+PKG_SECTION="graphics"
+PKG_SHORTDESC="libpng: Portable Network Graphics (PNG) Reference Library - old 1.2 version"
+PKG_LONGDESC="PNG (Portable Network Graphics) is an extensible file format for the lossless, portable, well-compressed storage of raster images. PNG provides a patent-free replacement for GIF and can also replace many common uses of TIFF. Indexed-color, grayscale, and truecolor images are supported, plus an optional alpha channel. Sample depths range from 1 to 16 bits. Old 1.2 version."
 PKG_IS_ADDON="no"
-
 PKG_AUTORECONF="no"
