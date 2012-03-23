@@ -22,13 +22,7 @@
 
 . config/options $1
 
-<<<<<<< HEAD
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/bin
-  cp -P $PKG_BUILD/scripts/$PKG_NAME $ADDON_BUILD/$PKG_ADDON_ID/bin/$PKG_NAME.bin
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
-=======
 mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -P $PKG_BUILD/scripts/$PKG_NAME $ADDON_BUILD/$PKG_ADDON_ID/pylib/$PKG_NAME.py
->>>>>>> queeup
   cp -PR $PKG_BUILD/$PKG_NAME $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -PR $BUILD/libsubliminal*/* $ADDON_BUILD/$PKG_ADDON_ID/pylib

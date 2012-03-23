@@ -24,10 +24,4 @@
 
 ADDON_DIR="$HOME/.xbmc/addons/shell.python.subliminal"
 
-<<<<<<< HEAD
-export PYTHONPATH="$PYTHONPATH:$ADDON_DIR/pylib"
-
-python $ADDON_DIR/bin/subliminal.bin $@
-=======
 python $ADDON_DIR/pylib/subliminal.py $@
->>>>>>> queeup
