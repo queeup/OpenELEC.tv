@@ -18,19 +18,24 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="automake"
-PKG_VERSION="1.11.4"
-PKG_REV="1"
-PKG_ARCH="any"
-PKG_LICENSE="GPL"
-PKG_SITE="http://sources.redhat.com/automake/"
-PKG_URL="http://ftp.gnu.org/gnu/automake/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS=""
-PKG_BUILD_DEPENDS="ccache autoconf"
-PKG_PRIORITY="optional"
-PKG_SECTION="toolchain/devel"
-PKG_SHORTDESC="automake: A GNU tool for automatically creating Makefiles"
-PKG_LONGDESC="This is Automake, a Makefile generator. It was inspired by the 4.4BSD make and include files, but aims to be portable and to conform to the GNU standards for Makefile variables and targets. Automake is a Perl script. The input files are called Makefile.am. The output files are called Makefile.in; they are intended for use with Autoconf. Automake requires certain things to be done in your configure.in."
-PKG_IS_ADDON="no"
+#
+# make variable directory structure
+#
+# runlevels: openelec, installer, textmode
 
-PKG_AUTORECONF="no"
+if [ ! "$SPLASH" = "no" ]; then
+  progress "starting splash"
+    if [ -z "$SPLASH_THEME" ]; then
+      SPLASH_THEME="default"
+    fi
+    mkdir -p /run/splash/cache/
+    fbsplashd --theme=$SPLASH_THEME --type=bootup
+
+    echo "set tty silent 2"            > /run/splash/cache/.splash
+    echo "set tty verbose 6"           > /run/splash/cache/.splash
+    echo "set mode silent"             > /run/splash/cache/.splash
+    echo "set message `lsb_release`"   > /run/splash/cache/.splash
+    echo "repaint"                     > /run/splash/cache/.splash
+    chvt 2
+fi
+
