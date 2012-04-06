@@ -1,6 +1,7 @@
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2011 Anthony Nash (nash.ant@gmail.com)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -18,19 +19,19 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="automake"
-PKG_VERSION="1.11.4"
+PKG_NAME="open-vm-tools"
+PKG_VERSION="2012.03.13-651368"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
-PKG_SITE="http://sources.redhat.com/automake/"
-PKG_URL="http://ftp.gnu.org/gnu/automake/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS=""
-PKG_BUILD_DEPENDS="ccache autoconf"
+PKG_SITE="http://open-vm-tools.sourceforge.net"
+PKG_URL="$SOURCEFORGE_SRC/project/open-vm-tools/open-vm-tools/2012.03.13/${PKG_NAME}-${PKG_VERSION}.tar.gz"
+PKG_DEPENDS="procps"
+PKG_BUILD_DEPENDS="toolchain"
 PKG_PRIORITY="optional"
-PKG_SECTION="toolchain/devel"
-PKG_SHORTDESC="automake: A GNU tool for automatically creating Makefiles"
-PKG_LONGDESC="This is Automake, a Makefile generator. It was inspired by the 4.4BSD make and include files, but aims to be portable and to conform to the GNU standards for Makefile variables and targets. Automake is a Perl script. The input files are called Makefile.am. The output files are called Makefile.in; they are intended for use with Autoconf. Automake requires certain things to be done in your configure.in."
-PKG_IS_ADDON="no"
+PKG_SECTION="virtualization"
+PKG_SHORTDESC="open-vm-tools: open source implementation of VMware Tools"
+PKG_LONGDESC="open-vm-tools: open source implementation of VMware Tools"
 
-PKG_AUTORECONF="no"
+PKG_IS_ADDON="no"
+PKG_AUTORECONF="yes"

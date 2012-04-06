@@ -1,6 +1,7 @@
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2011-2011 Gregor Fuis (gujs@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -18,21 +19,18 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-#
-# make variable directory structure
-#
-# runlevels: openelec, installer, textmode
+PKG_NAME="procps"
+PKG_VERSION="3.2.8"
+PKG_REV="1"
+PKG_ARCH="any"
+PKG_LICENSE="GPL"
+PKG_SITE="http://procps.sourceforge.net/"
+PKG_URL="http://procps.sourceforge.net/${PKG_NAME}-${PKG_VERSION}.tar.gz"
+PKG_DEPENDS=""
+PKG_BUILD_DEPENDS="toolchain ncurses"
+PKG_PRIORITY="optional"
+PKG_SECTION="system/utils"
+PKG_SHORTDESC="procps is the package that has a bunch of small useful utilities that give information about processes using the /proc filesystem"
+PKG_LONGDESC="procps is the package that has a bunch of small useful utilities that give information about processes using the /proc filesystem"
 
-if [ ! "$SPLASH" = "no" ]; then
-  progress "starting splash"
-    mkdir -p /run/splash/cache/
-    fbsplashd --theme=default --type=bootup
-
-    echo "set tty silent 2"            > /run/splash/cache/.splash
-    echo "set tty verbose 6"           > /run/splash/cache/.splash
-    echo "set mode silent"             > /run/splash/cache/.splash
-    echo "set message `lsb_release`"   > /run/splash/cache/.splash
-    echo "repaint"                     > /run/splash/cache/.splash
-    chvt 2
-fi
-
+PKG_AUTORECONF="no"
