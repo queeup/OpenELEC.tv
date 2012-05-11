@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="tvdb_api"
-PKG_VERSION="3a91a24"
+PKG_VERSION="9f99ca4"
 PKG_REV="0"
 PKG_ARCH="any"
 PKG_LICENSE="UNLICENSE"
