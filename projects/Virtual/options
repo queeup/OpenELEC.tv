@@ -1,9 +1,5 @@
 # Name of the Distro to build (full name, without special charcters)
-  if [ "$PVR" = yes ]; then
-    DISTRONAME="OpenELEC_PVR"
-  else
-    DISTRONAME="OpenELEC"
-  fi
+  DISTRONAME="OpenELEC"
 
 # Welcome Message for e.g. SSH Server (up to 5 Lines)
   GREETING0="##############################################"
@@ -39,7 +35,7 @@
       #               i686 i586 i486 i386
       # (VIA CPUs)    c3 c3-2
       #
-      TARGET_CPU="core2"
+      TARGET_CPU="i686"
       ;;
 
     x86_64)
@@ -76,13 +72,13 @@
   esac
 
 # Build optimizations (size/speed)
-  OPTIMIZATIONS="speed"
+  OPTIMIZATIONS="size"
 
 # Project CFLAGS
   PROJECT_CFLAGS="-mfpmath=sse -msse2 -mssse3"
 
 # LTO (Link Time Optimization) support
-  LTO_SUPPORT="no"
+  LTO_SUPPORT="yes"
 
 # Bootloader to use (syslinux / u-boot / atv-bootloader)
   BOOTLOADER="syslinux"
@@ -102,11 +98,7 @@
   SQUASHFS_COMPRESSION="gzip"
 
 # Mediacenter to use (xbmc / no)
-  if [ "$PVR" = yes ]; then
-    MEDIACENTER="xbmc-pvr"
-  else
-    MEDIACENTER="xbmc"
-  fi
+  MEDIACENTER="xbmc"
 
 # Skins to install (Confluence)
 # Space separated list is supported,
@@ -133,6 +125,9 @@
 # build and install 'GOOM' Visualization (yes / no)
   XBMC_VIS_GOOM="yes"
 
+# build and install ALSA Audio support (yes / no)
+  ALSA_SUPPORT="yes"
+
 # build and install PulseAudio support (yes / no)
   PULSEAUDIO_SUPPORT="no"
 
@@ -144,19 +139,20 @@
 # (DVD decryption support in XBMC) (yes / no)
   DVDCSS_SUPPORT="yes"
 
+# build and install with LAME cdrip encoder support
+  ENCODER_LAME="yes"
+
+# build and install with VORBIS cdrip encoder support
+  ENCODER_VORBIS="yes"
+
 # build and install with BluRay support (yes / no)
   BLURAY_SUPPORT="yes"
 
 # additional drivers to install:
-# AF9035:           Afa Technologies Inc. AF9035A USB DVB Device
-# asix-ax887xx:     Asix AX887xx USB LAN Driver
-# vboxguest:        Oracle VM VirtualBox Guest Additions / Graphics Card
+# for a list of additinoal drivers see packages/linux-drivers
 # Space separated list is supported,
-# e.g. ADDITIONAL_DRIVERS="asix-ax887xx AF9035 vboxguest"
-  ADDITIONAL_DRIVERS="asix-ax887xx vboxguest"
-  if [ "$PVR" = yes ]; then
-    ADDITIONAL_DRIVERS="$ADDITIONAL_DRIVERS AF9035 A867 aver_h826d RTL2832 hdhomerun-driver vtuner-driver"
-  fi
+# e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
+  ADDITIONAL_DRIVERS="RTL8192CU vboxguest dvbhdhomerun"
 
 # build with network support (yes / no)
   NETWORK="yes"
@@ -194,6 +190,12 @@
 # build and install SSH Guard (yes / no)
   SSHGUARD_SUPPORT="yes"
 
+# build and install PPP support (yes / no)
+  PPTP_SUPPORT="yes"
+
+# build and install OpenVPN support (yes / no)
+  OPENVPN_SUPPORT="yes"
+
 # build and install diskmounter service (udisks)
 # this service provide auto mounting support for external drives
 # in the mediacenter also automount internally drives at boottime (yes / no)
@@ -201,6 +203,9 @@
 
 # build and install powermanagement support (upower) (yes / no)
   UPOWER="yes"
+
+# build and install exFAT fuse support (yes / no)
+  EXFAT="yes"
 
 # build and install NTFS-3G fuse support (yes / no)
   NTFS3G="yes"
@@ -217,10 +222,16 @@
 # Windowmanager to use (ratpoison / none)
   WINDOWMANAGER="ratpoison"
 
+# Displayserver to use (xorg-server / no)
+  DISPLAYSERVER="xorg-server"
+
 # Xorg Graphic drivers to use (all / i915,i965,r200,r300,r600,fglrx,nvidia,nouveau,vmware,virtualbox)
 # Space separated list is supported,
 # e.g. GRAPHIC_DRIVERS="i915 i965 r300 r600 radeon nvidia nouveau"
   GRAPHIC_DRIVERS="vmware virtualbox"
+
+# OpenMAX implementation to use (no / bcm2835-driver)
+  OPENMAX="no"
 
 # Use VDPAU video acceleration (needs nVidia driver and a supported card)
   VDPAU="no"
@@ -233,7 +244,7 @@
 
 # Use Broadcom CrystalHD Decoder Card for video acceleration 
 # (needs Kernelsupport for Broadcom Decoder Card and a supported card)
-  CRYSTALHD="yes"
+  CRYSTALHD="no"
 
 # build and install remote support (yes / no)
   REMOTE_SUPPORT="yes"
@@ -254,7 +265,7 @@
   ISCSI_SUPPORT="yes"
 
 # LCD driver to Use - Possible drivers are ( Comma seperated:
-# bayrad,CFontz,CFontz633,CFontzPacket,curses,CwLnx,
+# bayrad,CFontz,CFontz633,CFontzPacket,curses,CwLnx,dm140,
 # ea65,EyeboxOne,g15,glcdlib,glk,hd44780,i2500vfd,
 # icp_a106,imon,imonlcd,IOWarrior,irman,irtrans,
 # joy,lb216,lcdm001,lcterm,lirc,lis,MD8800,mdm166a,
@@ -264,18 +275,24 @@
 # 'all' compiles all drivers;
 # 'all,!xxx,!yyy' de-selects previously selected drivers
 # "none" for disable LCD support
-  LCD_DRIVER="irtrans,imon,imonlcd,mdm166a,MtxOrb"
+  LCD_DRIVER="irtrans,imon,imonlcd,mdm166a,MtxOrb,lis,dm140"
+
+# Modules to install in initramfs for early boot
+  INITRAMFS_MODULES=""
 
 # additional Firmware to use (dvb-firmware, misc-firmware, wlan-firmware)
 # Space separated list is supported,
 # e.g. FIRMWARE="dvb-firmware misc-firmware wlan-firmware"
-  FIRMWARE="misc-firmware wlan-firmware"
-  if [ "$PVR" = yes ]; then
-    FIRMWARE="$FIRMWARE dvb-firmware"
-  fi
+  FIRMWARE="misc-firmware wlan-firmware dvb-firmware"
 
 # build with lm_sensors hardware monitoring support (yes / no)
   SENSOR_SUPPORT="yes"
+
+# build with swap support (yes / no)
+  SWAP_SUPPORT="no"
+
+# swapfile size if SWAP_SUPPORT=yes in kB (example: 262144 = 256MB )
+  SWAPFILESIZE="262144"
 
 # build with automatic update support (yes / no)
   UPDATE_SUPPORT="yes"
@@ -293,11 +310,19 @@
   COREBOOT="no"
 
 # Distribution Specific source location
+  DISTRO_MIRROR="http://sources.openelec.tv/mirror"
   DISTRO_SRC="http://sources.openelec.tv/$OPENELEC_VERSION"
 
 # Addon Server Url
   ADDON_SERVER_URL="http://addons.openelec.tv"
 
 # set the addon dirs
-  ADDON_PATH="$ADDON_VERSION/Intel/$TARGET_ARCH"
+  case $TARGET_ARCH in
+    i386)
+      ADDON_PATH="$ADDON_VERSION/Generic/$TARGET_ARCH"
+      ;;
+    x86_64)
+      ADDON_PATH="$ADDON_VERSION/Intel/$TARGET_ARCH"
+      ;;
+  esac
   ADDON_URL="$ADDON_SERVER_URL/$ADDON_PATH"

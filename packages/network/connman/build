@@ -22,10 +22,23 @@
 
 . config/options $1
 
+if [ "$PPTP_SUPPORT" = yes ]; then
+  CONNMAN_PPTP="--enable-pptp"
+  export PPPD="/usr/sbin/pppd"
+  export PPTP="/usr/sbin/pptp"
+else
+  CONNMAN_PPP="--disable-pptp"
+fi
+
+if [ "$OPENVPN_SUPPORT" = yes ]; then
+  CONNMAN_OPENVPN="--enable-openvpn --with-openvpn=/usr/sbin/openvpn"
+else
+  CONNMAN_OPENVPN="--disable-openvpn"
+fi
+
 export WPASUPPLICANT="/usr/bin/wpa_supplicant"
 
 cd $PKG_BUILD
-#ac_cv_path_WPASUPPLICANT="/sbin/wpa_supplicant" \
 ./configure --host=$TARGET_NAME \
             --build=$HOST_NAME \
             --prefix=/usr \
@@ -36,30 +49,28 @@ cd $PKG_BUILD
             --disable-gtk-doc \
             --disable-debug \
             --enable-threads \
+            --enable-loopback=builtin \
             --enable-ethernet=builtin \
             --enable-wifi=builtin \
             --disable-bluetooth \
             --disable-hh2serial-gps \
+            --disable-dundee \
+            --disable-wispr \
             --disable-ofono \
             --disable-openconnect \
-            --disable-portal \
-            --disable-openvpn \
+            $CONNMAN_OPENVPN \
             --disable-vpnc \
-            --enable-loopback=builtin \
+            --disable-l2tp \
+            $CONNMAN_PPTP \
+            --disable-tist \
             --disable-pacrunner \
-            --disable-google \
-            --enable-meego=builtin \
             --disable-iwmx \
             --disable-iospm \
-            --enable-ntpd=builtin \
-            --with-ntpd="/usr/sbin/ntpd" \
             --disable-nmcompat \
             --disable-polkit \
             --enable-client \
             --disable-tools \
             --disable-test \
-            --disable-fake \
-            --disable-capng \
             --enable-datafiles \
             --disable-silent-rules \
 

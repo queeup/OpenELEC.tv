@@ -1,5 +1,7 @@
 <settings>
     <setting id="LCD_DRIVER" value="none" />
+    <setting id="HDD_STANDBY" value="false" />
+    <setting id="HDD_STANDBY_TIME" value="15" />
     <setting id="NET_DNS1" value="" />
     <setting id="NET_DNS2" value="" />
     <setting id="NET_DNS3" value="" />
@@ -31,5 +33,5 @@
     <setting id="SAMBA_PASSWORD" value="openelec" />
     <setting id="UPDATE_AUTO" value="manual" />
     <setting id="X11_KEYMAP" value="us" />
-    <setting id="X11_KEYMAP2" value="" />
+    <setting id="X11_KEYMAP2" value="-none-" />
 </settings>

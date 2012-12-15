@@ -24,12 +24,21 @@
 
 . config/options $1
 
+if [ ! "$OPENGL" = "Mesa" ]; then
+  EXTRAOPTS="--without-opengl"
+fi
+
+if [ ! "$DISPLAYSERVER" = "xorg-server" ] ; then
+  EXTRAOPTS="$EXTRAOPTS --without-x11"
+fi
+
 cd $PKG_BUILD
 ./configure --host=$TARGET_NAME \
             --build=$HOST_NAME \
             --prefix=/usr \
             --enable-shared \
             --disable-static \
+            $EXTRAOPTS \
             --without-portaudio \
 
 make
