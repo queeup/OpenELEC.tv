@@ -47,13 +47,13 @@ fi
   fi
 
 # starting autostart script (will be removed later again, dont use it!!!)
-  AUTOSTART="/storage/.config/autostart.sh"
+  AUTOSTART="/storage/.config/autostart"
   if [ -f $AUTOSTART ]; then
     echo "!!! AUTOSTART script detected !!!" >> /var/log/messages
     cat "$AUTOSTART" >> /var/log/messages
     echo "!!! -End of autostart script- !!!" >> /var/log/messages
 
-    sh $AUTOSTART
+    $AUTOSTART
   fi
 
 # starting autoupdate
