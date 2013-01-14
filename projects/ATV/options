@@ -92,6 +92,9 @@
 # Configuration for u-boot
   UBOOT_CONFIG=""
 
+# Target Configfile for u-boot
+  UBOOT_CONFIGFILE=""
+
 # Kernel to use. values can be:
 # default:  default mainline kernel
 # ti-omap4: Ti's OMAP4 kernel
@@ -171,6 +174,18 @@
 
 # build and install Avahi (Zeroconf) daemon (yes / no)
   AVAHI_DAEMON="yes"
+
+# build with UPnP support (yes / no)
+  UPNP_SUPPORT="yes"
+
+# build with MySQL support (yes / no)
+  MYSQL_SUPPORT="yes"
+
+# build xbmc with sshlib support (yes / no)
+  SSHLIB_SUPPORT="yes"
+
+# build xbmc with optical drive support (yes / no)
+  OPTICAL_DRIVE_SUPPORT="yes"
 
 # build with AirPlay support (stream videos from iDevices to XBMC) (yes / no)
   AIRPLAY_SUPPORT="yes"

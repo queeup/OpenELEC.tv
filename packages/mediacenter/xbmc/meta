@@ -19,14 +19,14 @@
 ################################################################################
 
 PKG_NAME="xbmc"
-PKG_VERSION="baaa51c"
+PKG_VERSION="f70eb43"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.xbmc.org"
 PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_DEPENDS="boost Python zlib bzip2 systemd pcre ffmpeg libass curl libssh rtmpdump fontconfig tinyxml freetype libmad libogg libmodplug faad2 flac libmpeg2 taglib yajl sqlite bc xbmc-addon-settings"
-PKG_BUILD_DEPENDS="toolchain boost Python zlib bzip2 systemd lzo pcre swig ffmpeg libass enca curl libssh rtmpdump fontconfig fribidi tinyxml libjpeg-turbo libpng tiff freetype jasper libmad libsamplerate libogg libcdio libmodplug faad2 flac libmpeg2 taglib yajl sqlite mysql"
+PKG_BUILD_DEPENDS="toolchain boost Python zlib bzip2 systemd lzo pcre swig ffmpeg libass enca curl libssh rtmpdump fontconfig fribidi tinyxml libjpeg-turbo libpng tiff freetype jasper libmad libsamplerate libogg libcdio libmodplug faad2 flac libmpeg2 taglib yajl sqlite"
 PKG_PRIORITY="optional"
 PKG_SECTION="mediacenter"
 PKG_SHORTDESC="xbmc: XBMC Mediacenter"
@@ -41,6 +41,7 @@ PKG_AUTORECONF="no"
 # some python stuff needed for various addons
   PKG_DEPENDS="$PKG_DEPENDS Imaging"
   PKG_DEPENDS="$PKG_DEPENDS simplejson"
+  PKG_DEPENDS="$PKG_DEPENDS pycrypto"
 
 # various PVR clients
   PKG_DEPENDS="$PKG_DEPENDS xbmc-pvr-addons"
@@ -70,6 +71,10 @@ if [ "$OPENGLES_SUPPORT" = yes ]; then
   # for OpenGL-ES support
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS $OPENGLES"
   PKG_DEPENDS="$PKG_DEPENDS $OPENGLES"
+  if [ "$OPENGLES" = "marvell-libgfx" ]; then
+    PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS marvell-libvmeta marvell-ipp"
+    PKG_DEPENDS="$PKG_DEPENDS marvell-libvmeta marvell-ipp"
+  fi
 fi
 
 # for dbus support
@@ -123,6 +128,11 @@ fi
 if [ "$AVAHI_DAEMON" = yes ]; then
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS avahi"
   PKG_DEPENDS="$PKG_DEPENDS avahi"
+fi
+
+if [ "$MYSQL_SUPPORT" = yes ]; then
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS mysql"
+  PKG_DEPENDS="$PKG_DEPENDS mysql"
 fi
 
 if [ "$AIRPLAY_SUPPORT" = yes ]; then
