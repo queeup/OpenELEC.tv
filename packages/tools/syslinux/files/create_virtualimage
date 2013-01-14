@@ -1,0 +1,317 @@
+#!/bin/sh
+
+################################################################################
+#      Copyright (C) 2009-2010 OpenELEC.tv
+#      http://www.openelec.tv
+#
+#  This Program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2, or (at your option)
+#  any later version.
+#
+#  This Program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with OpenELEC.tv; see the file COPYING.  If not, write to
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
+#  http://www.gnu.org/copyleft/gpl.html
+################################################################################
+
+# usage:   sudo ./create_virtualmachine <path> <size(MB)> [<type>] [system partition size(MB)]
+# example: sudo ./create_virtualmachine /home/test/VM 512 [vdi] [128]
+
+if [ "$(id -u)" != "0" ]; then
+  clear
+  echo "##############################################################"
+  echo "# please execute with 'sudo' or -DANGEROUS!!!- as root       #"
+  echo "# example:                                                   #"
+  echo "# sudo ./create_virtualmachine <path> <size(MB)> [<type>]    #"
+  echo "##############################################################"
+  exit 1
+fi
+
+if [ -z "$1" -o -z "$2" ]; then
+  clear
+  echo "##############################################################"
+  echo "# please execute as follows                                  #"
+  echo "# example:                                                   #"
+  echo "# sudo ./create_virtualmachine <path> <size(MB)> [<type>]    #"
+  echo "##############################################################"
+  exit 1
+fi
+
+if [ ! -d "$1" ]; then
+  clear
+  echo "##############################################################"
+  echo "# please create target directory                             #"
+  echo "# example:                                                   #"
+  echo "# mkdir <path>                                               #"
+  echo "##############################################################"
+  exit 1
+fi
+
+if [ "$2" -lt "200" -o "$2" -gt "2048" ]; then
+  clear
+  echo "##############################################################"
+  echo "# use a value between 200MB and 2048MB (2GB)                 #"
+  echo "# example:                                                   #"
+  echo "# sudo ./create_virtualmachine /home/test/VM 512             #"
+  echo "##############################################################"
+  exit 1
+fi
+
+if [ ! -z "$3" -a "$3" != "vdi" -a "$3" != "vmdk" ]; then
+  clear
+  echo "##############################################################"
+  echo "# only vdi or vmdk types are supported                       #"
+  echo "# example:                                                   #"
+  echo "# sudo ./create_virtualmachine /home/test/VM 512 [vdi]       #"
+  echo "##############################################################"
+  exit 1
+elif [ "$3" = "vdi" ]; then
+  TYPE="vdi"
+elif [ -z "$3" -o "$3" = "vmdk" ]; then
+  TYPE="vmdk"
+fi
+
+if [ "$4" -lt "128" -o "$4" -gt "1024" -o "$4" -gt "$2" ]; then
+  clear
+  echo "##############################################################"
+  echo "# use a value between 128MB and 1024MB                       #"
+  echo "# example:                                                   #"
+  echo "# sudo ./create_virtualmachine /home/test/VM 512 [vdi] [256] #"
+  echo "##############################################################"
+  exit 1
+fi
+
+
+DISK="$1/OpenELEC.img"
+IMAGE="$1/OpenELEC.$TYPE"
+LOOP=$(losetup -f)
+SYSTEM_PART_SIZE=$(( $4 / 8 ))
+
+clear
+echo "#########################################################"
+echo "#                                                       #"
+echo "#             OpenELEC.tv USB Installer                 #"
+echo "#                                                       #"
+echo "#########################################################"
+echo "#                                                       #"
+echo "#     This will wipe any data off your chosen drive     #"
+echo "# Please read the instructions and use very carefully.. #"
+echo "#                                                       #"
+echo "#########################################################"
+
+# check for some required tools
+
+  # this is needed to create a bootloader
+  which syslinux > /dev/null
+  if [ "$?" = "1" ]; then
+    clear
+    echo "#########################################################"
+    echo "#                                                       #"
+    echo "# OpenELEC.tv missing tool - Installation will quit     #"
+    echo "#                                                       #"
+    echo "#      We can't find the required tool \"syslinux\"     #"
+    echo "#      on your system.                                  #"
+    echo "#      Please install it via your package manager.      #"
+    echo "#                                                       #"
+    echo "#########################################################"
+    exit 1
+  fi
+
+  # this is needed to create a bootloader
+  which extlinux > /dev/null
+  if [ "$?" = "1" ]; then
+    clear
+    echo "#########################################################"
+    echo "#                                                       #"
+    echo "# OpenELEC.tv missing tool - Installation will quit     #"
+    echo "#                                                       #"
+    echo "#      We can't find the required tool \"extlinux\"     #"
+    echo "#      on your system.                                  #"
+    echo "#      Please install it via your package manager.      #"
+    echo "#                                                       #"
+    echo "#########################################################"
+    exit 1
+  fi
+
+  # this is needed by syslinux
+  which mcopy > /dev/null
+    if [ "$?" = "1" ]; then
+    clear
+    echo "#########################################################"
+    echo "#                                                       #"
+    echo "# OpenELEC.tv missing tool - Installation will quit     #"
+    echo "#                                                       #"
+    echo "#      We can't find the required tool \"mcopy\"        #"
+    echo "#      on your system.                                  #"
+    echo "#      Please install it via your package manager.      #"
+    echo "#      NOTE: Some distributions call this package       #"
+    echo "#      \"mtools\".                                      #"
+    echo "#                                                       #"
+    echo "#########################################################"
+    exit 1
+  fi
+
+  # this is needed to partion the drive
+  which parted > /dev/null
+  if [ "$?" = "1" ]; then
+    clear
+    echo "#########################################################"
+    echo "#                                                       #"
+    echo "# OpenELEC.tv missing tool - Installation will quit     #"
+    echo "#                                                       #"
+    echo "#      We can't find the required tool \"parted\"       #"
+    echo "#      on your system.                                  #"
+    echo "#      Please install it via your package manager.      #"
+    echo "#                                                       #"
+    echo "#########################################################"
+    exit 1
+  fi
+
+  # this is needed fo convert harddisk image to vmdk or vdi format
+  which qemu-img > /dev/null
+  if [ "$?" = "1" ]; then
+    clear
+    echo "#########################################################"
+    echo "#                                                       #"
+    echo "# OpenELEC.tv missing tool - Installation will quit     #"
+    echo "#                                                       #"
+    echo "#      We can't find the required tool \"qemu-img\"     #"
+    echo "#      on your system.                                  #"
+    echo "#      Please install it via your package manager.      #"
+    echo "#                                                       #"
+    echo "#########################################################"
+    exit 1
+  fi
+
+
+# check MD5 sums
+  echo "checking MD5 sum..."
+
+  md5sumFailed()
+  {
+    clear
+    echo "#########################################################"
+    echo "#                                                       #"
+    echo "# OpenELEC.tv failed md5 check - Installation will quit #"
+    echo "#                                                       #"
+    echo "#      Your original download was probably corrupt.     #"
+    echo "#   Please visit www.openelec.tv and get another copy   #"
+    echo "#                                                       #"
+    echo "#########################################################"
+    exit 1
+  }
+
+  md5sum -c target/KERNEL.md5
+  if [ "$?" = "1" ]; then
+    md5sumFailed
+  fi
+
+  md5sum -c target/SYSTEM.md5
+  if [ "$?" = "1" ]; then
+    md5sumFailed
+  fi
+
+# ensure loop0 not in use
+  umount "$LOOP"
+  losetup -d "$LOOP"
+
+# create an image
+  echo "creating new empty harddisk image: $DISK..."
+  dd if=/dev/zero of="$DISK" bs=1M count="$2"
+
+# write a disklabel
+  echo "creating new partition table: $DISK..."
+  losetup "$LOOP" "$DISK"
+  parted -s "$LOOP" mklabel msdos
+
+# create partition1
+  echo "creating partition1 on $DISK..."
+  parted -s "$LOOP" unit cyl mkpart primary ext2 -- 0 "$SYSTEM_PART_SIZE"
+
+# create partition2
+  echo "creating partition2 on $DISK..."
+  parted -s "$LOOP" unit cyl mkpart primary ext2 -- "$(( $SYSTEM_PART_SIZE + 1 ))" -2
+  
+# make partition1 active (bootable)
+  echo "marking partition1 active..."
+  parted -s "$LOOP" set 1 boot on
+    
+  echo "telling kernel we have a new partition table..."
+  partprobe "$LOOP"
+
+# create filesystem on partition1
+  echo "creating filesystem on partition1..."   
+  mkfs.ext4 "${LOOP}p1" -L System
+  
+# create filesystem on partition2  
+  echo "creating filesystem on partition2..."   
+  mkfs.ext4 "${LOOP}p2" -L Storage
+  sync 
+
+# write mbr
+  echo "writing mbr..."
+  if [ -f /usr/lib/syslinux/mbr.bin ]; then
+    MBR="/usr/lib/syslinux/mbr.bin"       # example: debian, ubuntu
+  elif [ -f /usr/share/syslinux/mbr.bin ]; then
+    MBR="/usr/share/syslinux/mbr.bin"     # example: fedora
+  else
+    echo "Can't find syslinux's mbr.bin on Host OS"
+  fi
+
+  if [ -n "$MBR" ]; then
+    cat "$MBR" > "$LOOP"
+  fi
+
+# mount partition
+  echo "mounting partition1 on /tmp/vmware_install..."
+  mkdir -p /tmp/vmware_install
+  mount "${LOOP}p1" /tmp/vmware_install
+
+# create bootloader configuration
+  echo "creating bootloader configuration..."
+
+  echo "DEFAULT linux" > /tmp/vmware_install/syslinux.cfg
+  echo "PROMPT 0" >> /tmp/vmware_install/syslinux.cfg
+  echo " " >> /tmp/vmware_install/syslinux.cfg
+  echo "LABEL linux" >> /tmp/vmware_install/syslinux.cfg
+  echo "  KERNEL /KERNEL" >> /tmp/vmware_install/syslinux.cfg
+  echo "  APPEND boot=LABEL=System disk=LABEL=Storage ssh debugging nosplash" >> /tmp/vmware_install/syslinux.cfg
+
+# install extlinux
+  echo "installing extlinux to partition1..."
+  extlinux --heads=4 --sector=32 -i /tmp/vmware_install
+
+# copy files
+  echo "copying files to partition1..."
+  cp target/KERNEL /tmp/vmware_install
+  cp target/SYSTEM /tmp/vmware_install
+
+# sync disk
+  echo "syncing disk..."
+  sync
+
+# unmount partition1
+  echo "unmounting partition1..."
+  umount "${LOOP}p1"
+  sync
+
+# detach loop0
+  losetup -d "$LOOP"
+
+# cleaning
+  echo "cleaning tempdir..."
+  rm -rf /tmp/vmware_install
+
+# convert image to vmdk or vdi
+  echo "converting $DISK to $TYPE format..."
+  qemu-img convert -O $TYPE "$DISK" "$IMAGE"
+  rm -f "$DISK"
+
+echo "...installation finished"
+

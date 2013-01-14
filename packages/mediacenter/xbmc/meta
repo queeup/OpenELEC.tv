@@ -1,6 +1,6 @@
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -14,19 +14,19 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
 PKG_NAME="xbmc"
-PKG_VERSION="f3b0020"
+PKG_VERSION="f70eb43"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.xbmc.org"
 PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="boost Python zlib bzip2 lzo pcre alsa-lib libass enca curl libssh rtmpdump $MESA glew fontconfig fribidi $LIBJPEG libpng tiff freetype jasper libmad libsamplerate libogg libvorbis libcdio libmodplug faad2 flac lame libmpeg2 SDL SDL_mixer SDL_image yajl sqlite mysql alsa bc xbmc-addon-settings"
-PKG_BUILD_DEPENDS="toolchain boost Python zlib bzip2 lzo pcre alsa-lib libass enca curl libssh rtmpdump $MESA glew fontconfig fribidi $LIBJPEG libpng tiff freetype jasper libmad libsamplerate libogg libvorbis libcdio libmodplug faad2 flac lame libmpeg2 SDL SDL_mixer SDL_image yajl sqlite mysql"
+PKG_DEPENDS="boost Python zlib bzip2 systemd pcre ffmpeg libass curl libssh rtmpdump fontconfig tinyxml freetype libmad libogg libmodplug faad2 flac libmpeg2 taglib yajl sqlite bc xbmc-addon-settings"
+PKG_BUILD_DEPENDS="toolchain boost Python zlib bzip2 systemd lzo pcre swig ffmpeg libass enca curl libssh rtmpdump fontconfig fribidi tinyxml libjpeg-turbo libpng tiff freetype jasper libmad libsamplerate libogg libcdio libmodplug faad2 flac libmpeg2 taglib yajl sqlite"
 PKG_PRIORITY="optional"
 PKG_SECTION="mediacenter"
 PKG_SHORTDESC="xbmc: XBMC Mediacenter"
@@ -35,17 +35,56 @@ PKG_IS_ADDON="no"
 
 PKG_AUTORECONF="no"
 
-# for libX11 support
+# needed for hosttools (Texturepacker)
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS lzo-host SDL-host SDL_image-host"
+
+# some python stuff needed for various addons
+  PKG_DEPENDS="$PKG_DEPENDS Imaging"
+  PKG_DEPENDS="$PKG_DEPENDS simplejson"
+  PKG_DEPENDS="$PKG_DEPENDS pycrypto"
+
+# various PVR clients
+  PKG_DEPENDS="$PKG_DEPENDS xbmc-pvr-addons"
+  PKG_DEPENDS="$PKG_DEPENDS xbmc-addon-xvdr"
+
+if [ "$DISPLAYSERVER" = "xorg-server" ]; then
+  # for libX11 support
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS libX11 libXext"
   PKG_DEPENDS="$PKG_DEPENDS libX11 libXext"
 
-# for libXrandr support
+  # for libXrandr support
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS libXrandr"
   PKG_DEPENDS="$PKG_DEPENDS libXrandr"
+
+  # for SDL support
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS SDL SDL_image"
+  PKG_DEPENDS="$PKG_DEPENDS SDL SDL_image"
+fi
+
+if [ "$OPENGL" = "Mesa" ]; then
+  # for OpenGL (GLX) support
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS Mesa glu glew"
+  PKG_DEPENDS="$PKG_DEPENDS Mesa glu glew"
+fi
+
+if [ "$OPENGLES_SUPPORT" = yes ]; then
+  # for OpenGL-ES support
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS $OPENGLES"
+  PKG_DEPENDS="$PKG_DEPENDS $OPENGLES"
+  if [ "$OPENGLES" = "marvell-libgfx" ]; then
+    PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS marvell-libvmeta marvell-ipp"
+    PKG_DEPENDS="$PKG_DEPENDS marvell-libvmeta marvell-ipp"
+  fi
+fi
 
 # for dbus support
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS dbus"
   PKG_DEPENDS="$PKG_DEPENDS dbus"
+
+if [ "$ALSA_SUPPORT" = yes ]; then
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS alsa-lib"
+  PKG_DEPENDS="$PKG_DEPENDS alsa alsa-lib"
+fi
 
 if [ "$PULSEAUDIO_SUPPORT" = yes ]; then
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS pulseaudio"
@@ -57,6 +96,10 @@ if [ "$CEC_SUPPORT" = yes ]; then
   PKG_DEPENDS="$PKG_DEPENDS libcec"
 fi
 
+#if [ ! "$LCD_DRIVER" = "none" ]; then
+#  PKG_DEPENDS="$PKG_DEPENDS xbmc-addon-lcd"
+#fi
+
 if [ "$XBMC_SCR_RSXS" = yes ]; then
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS libXt libXmu"
   PKG_DEPENDS="$PKG_DEPENDS libXt libXmu"
@@ -67,6 +110,16 @@ if [ "$FAAC_SUPPORT" = yes ]; then
   PKG_DEPENDS="$PKG_DEPENDS faac"
 fi
 
+if [ "$ENCODER_LAME" = yes ]; then
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS lame"
+  PKG_DEPENDS="$PKG_DEPENDS lame"
+fi
+
+if [ "$ENCODER_VORBIS" = yes ]; then
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS libvorbis"
+  PKG_DEPENDS="$PKG_DEPENDS libvorbis"
+fi
+
 if [ "$BLURAY_SUPPORT" = yes ]; then
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS libbluray"
   PKG_DEPENDS="$PKG_DEPENDS libbluray"
@@ -75,6 +128,11 @@ fi
 if [ "$AVAHI_DAEMON" = yes ]; then
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS avahi"
   PKG_DEPENDS="$PKG_DEPENDS avahi"
+fi
+
+if [ "$MYSQL_SUPPORT" = yes ]; then
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS mysql"
+  PKG_DEPENDS="$PKG_DEPENDS mysql"
 fi
 
 if [ "$AIRPLAY_SUPPORT" = yes ]; then
@@ -104,7 +162,11 @@ fi
 
 if [ "$WEBSERVER" = yes ]; then
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS libmicrohttpd"
-  PKG_DEPENDS="$PKG_DEPENDS libmicrohttpd"
+fi
+
+if [ "$OPENMAX_SUPPORT" = yes ]; then
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS $OPENMAX"
+  PKG_DEPENDS="$PKG_DEPENDS $OPENMAX"
 fi
 
 if [ "$VDPAU" = yes ]; then
@@ -122,7 +184,6 @@ if [ "$CRYSTALHD" = yes ]; then
   PKG_DEPENDS="$PKG_DEPENDS crystalhd"
 fi
 
-# some python stuff needed for various addons
-  PKG_DEPENDS="$PKG_DEPENDS Imaging"
-  PKG_DEPENDS="$PKG_DEPENDS simplejson"
-
+if [ "$XVBA" = yes ]; then
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS xf86-video-fglrx"
+fi

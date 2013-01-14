@@ -2,7 +2,7 @@
 
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,19 +16,13 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
 . config/options $1
 
-PY_DISABLED_MODULES="readline _curses _curses_panel _tkinter nis gdbm bsddb _codecs_kr _codecs_jp _codecs_cn _codecs_tw _codecs_hk"
-
-# dont use some optimizations because of problems
-# this fixes problems with expat (maybe)
-  LDFLAGS=`echo $LDFLAGS | sed -e "s|-Wl,--as-needed||"`
-
-  strip_lto
+PY_DISABLED_MODULES="readline _curses _curses_panel _tkinter nis gdbm bsddb"
 
 cd $PKG_BUILD
 mkdir -p .objdir-target && cd .objdir-target
@@ -38,10 +32,8 @@ ac_cv_file_dev_ptmx=yes \
 ac_cv_func_lchflags_works=no \
 ac_cv_func_chflags_works=no \
 ac_cv_func_printf_zd=yes \
-OPT="$CFLAGS -fno-strict-aliasing" \
 ../configure --host=$TARGET_NAME \
              --build=$HOST_NAME \
-             --cache-file=config.cache \
              --prefix=/usr \
              --sysconfdir=/etc \
              --enable-shared \
@@ -52,9 +44,9 @@ OPT="$CFLAGS -fno-strict-aliasing" \
              --without-pydebug \
              --without-doc-strings \
              --without-tsc \
-             --without-pymalloc \
+             --with-pymalloc \
              --without-fpectl \
-             --without-wctype-functions \
+             --with-wctype-functions \
              --without-cxx-main \
              --with-system-ffi \
              --with-system-expat \
@@ -83,3 +75,24 @@ make  -j1 CC="$TARGET_CC" \
       PYTHON_MODULES_LIB="$TARGET_LIBDIR" \
       install
 
+# python distutils per default adds -L$LIBDIR when linking binary extensions
+sed -e "s|^LIBDIR=.*|LIBDIR= $SYSROOT_PREFIX/usr/lib|" \
+    -i $SYSROOT_PREFIX/usr/lib/python*/config/Makefile
+
+EXCLUDE_DIRS="bsddb curses idlelib lib-tk lib2to3 msilib wsgiref"
+INCLUDE_DIRS="compiler ctypes ctypes/macholib distutils distutils/command email"
+INCLUDE_DIRS="$INCLUDE_DIRS email/mime encodings hotshot importlib json logging"
+INCLUDE_DIRS="$INCLUDE_DIRS multiprocessing plat-linux2 sqlite3 xml xml/dom xml/etree"
+INCLUDE_DIRS="$INCLUDE_DIRS xml/parsers xml/sax"
+
+mkdir ./Lib
+cp ../Lib/*.py ./Lib
+
+for dirs in $INCLUDE_DIRS; do
+  mkdir -p ./Lib/$dirs
+  cp ../Lib/$dirs/*.py ./Lib/$dirs
+done
+
+python -Wi -t -B ../Lib/compileall.py ./Lib -f
+
+rm -rf `find ./Lib -name "*.py"`

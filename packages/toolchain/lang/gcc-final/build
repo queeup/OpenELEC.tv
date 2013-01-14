@@ -2,7 +2,7 @@
 
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
@@ -39,7 +39,6 @@ mkdir -p objdir-$1 && cd objdir-$1
              --with-ppl=$ROOT/$TOOLCHAIN \
              --disable-ppl-version-check \
              --with-cloog=$ROOT/$TOOLCHAIN \
-             --with-libelf=$ROOT/$TOOLCHAIN \
              --enable-languages=${TOOLCHAIN_LANGUAGES} \
              --with-gnu-as \
              --with-gnu-ld \
@@ -49,19 +48,34 @@ mkdir -p objdir-$1 && cd objdir-$1
              --disable-libmudflap \
              --disable-libssp \
              --disable-multilib \
-             --enable-gold=yes \
-             --enable-ld=default \
+             --disable-gold \
+             --enable-ld \
              --enable-plugin \
              --enable-lto \
              --disable-libquadmath \
+             --enable-cloog-backend=isl \
              --enable-tls \
              --enable-shared \
              --enable-c99 \
              --enable-long-long \
              --enable-threads=posix \
+             --disable-libstdcxx-pch \
+             --enable-clocale=gnu \
+             $GCC_OPTS \
              --disable-nls
 
 make
+
+# fix wrong link
+  rm -rf $TARGET_NAME/libgcc/libgcc_s.so
+  ln -sf libgcc_s.so.1 $TARGET_NAME/libgcc/libgcc_s.so
+
+if [ ! "$DEBUG" = yes ]; then
+  $TARGET_STRIP $TARGET_NAME/libgcc/libgcc_s.so*
+  $TARGET_STRIP $TARGET_NAME/libgomp/.libs/libgomp.so*
+  $TARGET_STRIP $TARGET_NAME/libitm/.libs/libitm.so*
+  $TARGET_STRIP $TARGET_NAME/libstdc++-v3/src/.libs/libstdc++.so*
+fi
 
 make install
 cp -PR $TARGET_NAME/libstdc++-v3/src/.libs/libstdc++.so* $SYSROOT_PREFIX/usr/lib

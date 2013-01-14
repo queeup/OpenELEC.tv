@@ -10,7 +10,9 @@ set -e
   ADDONS=addons
 
 # include ARCH specific options
-  . config/arch.$TARGET_ARCH
+  if [ -f config/arch.$TARGET_ARCH ]; then
+    . config/arch.$TARGET_ARCH
+  fi
 
 HOST_NAME=`$LOCAL_CC -dumpmachine`
 TARGET_NAME=$(echo $TARGET_SUBARCH | sed -e "s,-,,")-openelec-linux-gnu${TARGET_ABI}
@@ -32,10 +34,6 @@ FAKEROOT_SCRIPT=$ROOT/.fakeroot.$PROJECT.$TARGET_ARCH
 
 . config/sources
 
-if [ "$OPENELEC_VERSION" = devel ]; then
-  DEVTOOLS=yes
-fi
-
 MAKE="$ROOT/$TOOLCHAIN/bin/make"
 MAKEINSTALL="$ROOT/$TOOLCHAIN/bin/make -j1 DESTDIR=$SYSROOT_PREFIX install"
 SED="sed -i"
@@ -56,7 +54,14 @@ SED="sed -i"
   PKG_LONGDESC=""
   PKG_IS_ADDON="no"
 
-  [ -n "$1" ] && PKG_DIR=`find $PACKAGES -type d -name $1 2>/dev/null`
+  if [ -n "$1" ]; then
+    PKG_DIR=`find $PACKAGES -type d -name $1 ! -wholename \*\/source\/\* 2>/dev/null`
+    if [ "${PKG_DIR}" != "$(echo $PKG_DIR | tr -d '\n')" ]; then
+      echo "Error - multiple package folders:"
+      echo "$PKG_DIR"
+      exit 1
+    fi
+  fi
 
   [ -r $PKG_DIR/meta ] && . $PKG_DIR/meta
   [ "$PKG_IS_ADDON" = "yes" ] && PKG_ADDON_ID="`echo $PKG_SECTION | sed 's,/,.,g'`.$PKG_NAME"
@@ -70,6 +75,8 @@ XORG_PATH_XKB_OUTPUT=/var/lib/xkb
 XORG_PATH_RGB=/usr/lib/X11/rgb
 XORG_PATH_MODULES=/usr/lib/xorg/modules
 XORG_PATH_DRIVERS=/usr/lib/xorg/modules/drivers
+
+SSL_CERTIFICATES="/etc/pki/tls"
 
 TOOLCHAIN_LANGUAGES=c
 [ "$TOOLCHAIN_CXX" = yes ] && TOOLCHAIN_LANGUAGES=${TOOLCHAIN_LANGUAGES},c++
@@ -106,7 +113,9 @@ HOST_PKG_CONFIG_PATH=""
 HOST_PKG_CONFIG_LIBDIR="$ROOT/$TOOLCHAIN/lib/pkgconfig:$ROOT/$TOOLCHAIN/share/pkgconfig"
 HOST_PKG_CONFIG_SYSROOT_DIR=""
 
-export CCACHE_DIR=$ROOT/$BUILD/.ccache
+if [ -z "$CCACHE_DIR" ]; then
+    export CCACHE_DIR=$HOME/.ccache-openelec
+fi
 export MAKEFLAGS=-j$CONCURRENCY_MAKE_LEVEL
 export PKG_CONFIG=$ROOT/$TOOLCHAIN/bin/pkg-config
 
@@ -114,8 +123,15 @@ if [ -z "$PATH" -o "$PATH" = "${PATH#$ROOT/$TOOLCHAIN/bin:}" ]; then
   export PATH="$ROOT/$TOOLCHAIN/bin:$PATH"
 fi
 
+if [ -z "$LD_LIBRARY_PATH" -o "$LD_LIBRARY_PATH" = "${LD_LIBRARY_PATH#$ROOT/$TOOLCHAIN/lib:}" ]; then
+  export LD_LIBRARY_PATH="$ROOT/$TOOLCHAIN/lib:$LD_LIBRARY_PATH"
+fi
+
 VERSION_SUFFIX=$TARGET_ARCH
 . config/functions
+
+check_path
+check_config
 
 setup_toolchain target
 
@@ -128,4 +144,4 @@ else
   exec 3>&2
   exec 4>/dev/null
 fi
-INDENT_SIZE=4
+BUILD_INDENT_SIZE=4

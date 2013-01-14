@@ -1,22 +1,20 @@
-OpenELEC (Version 2.0)
+OpenELEC (Version 2.1)
 
-Changelog OpenELEC-1.0 to OpenELEC-2.0
+Changelog OpenELEC-2.0 to OpenELEC-2.1
+
+Added packages:
+  - add package 'ppp'
+  - add package 'pptp'
 
 Package updates:
-  - update XBMC to XBMC-11.0 (Eden)
-  - update eglibc to eglibc-2.14.1
-  - update Python to Python-2.7.2
-  - update gcc to gcc-4.6.2
-  - update openssl to openssl-1.0.0e
-  - update xorg-server to xorg-server-1.11
+  - update linux to linux-3.5
+  - update dialog to dialog-1.1-20120215
+  - update connman to connman-1.4
 
 Added functions:
-  - PXE netboot support
-  - Airplay support
-  - Airtunes support
-  - CEC support
+  - sshd can be enabled via OpenELEC Settings addon
+  - add PPTP support
+
+Changed functions:
 
 Removed functions:
-  - remove netmount.conf (XBMC includes native NFS/AFP/CIFS/SSH support)
-  - move PS3 controller support in a own addon
-  - move Wii controller support in a own addon

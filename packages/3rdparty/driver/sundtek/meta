@@ -1,6 +1,6 @@
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -14,18 +14,17 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
 PKG_NAME="sundtek"
-#PKG_VERSION="installer_111001.1658"
-PKG_VERSION="installer_development"
+PKG_VERSION="20120912"
 PKG_REV="0"
-PKG_ARCH="any"
+PKG_ARCH="i386 x86_64 arm"
 PKG_LICENSE="nonfree"
 PKG_SITE="http://support.sundtek.com/"
-PKG_URL="http://www.sundtek.de/media/${PKG_NAME}_${PKG_VERSION}.sh"
+PKG_URL="${DISTRO_SRC}/${PKG_NAME}-${PKG_VERSION}-${ARCH}.tar.gz"
 PKG_DEPENDS=""
 PKG_BUILD_DEPENDS=""
 PKG_PRIORITY="optional"

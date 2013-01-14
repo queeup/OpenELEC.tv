@@ -2,7 +2,7 @@
 
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,14 +16,48 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
 . config/options $1
 
+# disable build of GOOM until its fixed
+  XBMC_VIS_GOOM="no"
+
+if [ "$DISPLAYSERVER" = "xorg-server" ]; then
+  XBMC_XORG="--enable-x11 --enable-xrandr"
+else
+  XBMC_XORG="--disable-x11 --disable-xrandr"
+fi
+
+if [ "$OPENGL" = "Mesa" ]; then
+  XBMC_OPENGL="--enable-gl"
+else
+  XBMC_OPENGL="--disable-gl"
+fi
+
+if [ "$OPENGLES_SUPPORT" = yes ]; then
+  XBMC_OPENGLES="--enable-gles"
+  if [ "$OPENGLES" = "marvell-libgfx" ]; then
+    XBMC_PLATFORM_SUPPORT="--with-platform=marvell-dove"
+  fi
+else
+  XBMC_OPENGLES="--disable-gles"
+fi
+
+if [ "$SDL_SUPPORT" = yes ]; then
+  XBMC_SDL="--enable-sdl"
+else
+  XBMC_SDL="--disable-sdl"
+fi
+
 if [ "$XBMC_SCR_RSXS" = yes ]; then
   XBMC_RSXS="--enable-rsxs"
+  # fix build of RSXS Screensaver support if not using libiconv
+    if [ ! "$ICONV" = "libiconv" ]; then
+      export jm_cv_func_gettimeofday_clobber=no
+    fi
 else
   XBMC_RSXS="--disable-rsxs"
 fi
@@ -40,6 +74,12 @@ else
   XBMC_GOOM="--disable-goom"
 fi
 
+if [ "$ALSA_SUPPORT" = yes ]; then
+  XBMC_ALSA="--enable-alsa"
+else
+  XBMC_ALSA="--disable-alsa"
+fi
+
 if [ "$PULSEAUDIO_SUPPORT" = yes ]; then
   XBMC_PULSEAUDIO="--enable-pulse"
 else
@@ -47,9 +87,15 @@ else
 fi
 
 if [ "$CEC_SUPPORT" = yes ]; then
-  XBMC_CEC="--enable-libcec --enable-external-libcec --enable-udev --disable-libusb"
+  XBMC_CEC="--enable-libcec"
 else
-  XBMC_CEC="--disable-libcec --disable-udev --disable-libusb"
+  XBMC_CEC="--disable-libcec"
+fi
+
+if [ "$JOYSTICK_SUPPORT" = yes ]; then
+  XBMC_JOYSTICK="--enable-joystick"
+else
+  XBMC_JOYSTICK="--disable-joystick"
 fi
 
 if [ "$NONFREE_SUPPORT" = yes ]; then
@@ -76,6 +122,18 @@ else
   XBMC_DVDCSS="--disable-dvdcss"
 fi
 
+if [ "$ENCODER_LAME" = yes ]; then
+  XBMC_LAMEENC="--enable-libmp3lame"
+else
+  XBMC_LAMEENC="--disable-libmp3lame"
+fi
+
+if [ "$ENCODER_VORBIS" = yes ]; then
+  XBMC_VORBISENC="--enable-libvorbisenc"
+else
+  XBMC_VORBISENC="--disable-libvorbisenc"
+fi
+
 if [ "$BLURAY_SUPPORT" = yes ]; then
   XBMC_BLURAY="--enable-libbluray"
 else
@@ -86,6 +144,30 @@ if [ "$AVAHI_DAEMON" = yes ]; then
   XBMC_AVAHI="--enable-avahi"
 else
   XBMC_AVAHI="--disable-avahi"
+fi
+
+if [ "$UPNP_SUPPORT" = yes ]; then
+  XBMC_UPNP="--enable-upnp"
+else
+  XBMC_UPNP="--disable-upnp"
+fi
+
+if [ "$MYSQL_SUPPORT" = yes ]; then
+  XBMC_MYSQL="--enable-mysql"
+else
+  XBMC_MYSQL="--disable-mysql"
+
+fi
+if [ "$SSHLIB_SUPPORT" = yes ]; then
+  XBMC_SSH="--enable-ssh"
+else
+  XBMC_SSH="--disable-ssh"
+fi
+
+if [ "$OPTICAL_DRIVE_SUPPORT" = yes ]; then
+  XBMC_OPTICAL="--enable-optical-drive"
+else
+  XBMC_OPTICAL="--disable-optical-drive"
 fi
 
 if [ "$NFS_SUPPORT" = yes ]; then
@@ -102,6 +184,7 @@ fi
 
 if [ "$SAMBA_CLIENT" = yes ]; then
   XBMC_SAMBA="--enable-samba"
+  export LIBS="$LIBS -ltalloc -ltdb -lwbclient"
 else
   XBMC_SAMBA="--disable-samba"
 fi
@@ -110,6 +193,20 @@ if [ "$WEBSERVER" = yes ]; then
   XBMC_WEBSERVER="--enable-webserver"
 else
   XBMC_WEBSERVER="--disable-webserver"
+fi
+
+if [ "$OPENMAX_SUPPORT" = yes ]; then
+  XBMC_OPENMAX="--enable-openmax"
+  if [ "$OPENMAX" = "bcm2835-driver" ]; then
+    XBMC_PLATFORM_SUPPORT="--with-platform=raspberry-pi"
+    XBMC_PLAYER="--enable-player=omxplayer"
+    BCM2835_INCLUDES="-I$SYSROOT_PREFIX/usr/include/interface/vcos/pthreads/ \
+                      -I$SYSROOT_PREFIX/usr/include/interface/vmcs_host/linux"
+    CFLAGS="$CFLAGS $BCM2835_INCLUDES"
+    CXXFLAGS="$CXXFLAGS $BCM2835_INCLUDES"
+  fi
+else
+  XBMC_OPENMAX="--disable-openmax"
 fi
 
 if [ "$VDPAU" = yes ]; then
@@ -136,13 +233,14 @@ else
   XBMC_CRYSTALHD="--disable-crystalhd"
 fi
 
-# xbmc (ffmpeg) fails to build with LTO optimization
+# xbmc fails to build with LTO optimization
   strip_lto
-  strip_gold
 
-# dont use some optimizations because of problems
-# this fixes problems with faac implementation of ffmpeg
+# dont use some optimizations because of build problems
   LDFLAGS=`echo $LDFLAGS | sed -e "s|-Wl,--as-needed||"`
+
+# dont build parallel
+  MAKEFLAGS=-j1
 
   export PYTHON_VERSION="2.7"
   export PYTHON_CPPFLAGS="-I$SYSROOT_PREFIX/usr/include/python$PYTHON_VERSION"
@@ -160,19 +258,7 @@ cd $PKG_BUILD
   touch addons/skin.confluence/media/Makefile.in
 
 # autoreconf
-  do_autoreconf
-  do_autoreconf lib/libid3tag/libid3tag
-  do_autoreconf xbmc/screensavers/rsxs-0.9
-  do_autoreconf xbmc/visualizations/Goom/goom2k4-0
-  do_autoreconf lib/libapetag
-  do_autoreconf lib/cpluff
-  # order matters with libdvd and friends
-  [ -d lib/libdvd/libdvdcss ] && do_autoreconf lib/libdvd/libdvdcss
-  do_autoreconf lib/libdvd/libdvdread
-  do_autoreconf lib/libdvd/libdvdnav
-
-# Clean the generated files
-  find . -depth -type d -name "autom4te.cache" -exec rm -rf {} \;
+  BOOTSTRAP_STANDALONE=1 make -f bootstrap.mk
 
 ./configure --host=$TARGET_NAME \
             --build=$HOST_NAME \
@@ -185,50 +271,65 @@ cd $PKG_BUILD
             GIT_REV=`cat git.version` \
             --disable-debug \
             --disable-optimizations \
-            --enable-gl \
-            --disable-gles \
+            $XBMC_OPENGL \
+            $XBMC_OPENGLES \
+            $XBMC_SDL \
+            $XBMC_OPENMAX \
             $XBMC_VDPAU \
             $XBMC_VAAPI \
             $XBMC_CRYSTALHD \
             $XBMC_XVBA \
             --disable-vdadecoder \
             --disable-vtbdecoder \
-            --disable-openmax \
             --disable-tegra \
             --disable-profiling \
-            --enable-joystick \
+            $XBMC_JOYSTICK \
             $XBMC_CEC \
+            --enable-udev \
+            --disable-libusb \
             $XBMC_GOOM \
             $XBMC_RSXS \
             $XBMC_PROJECTM \
-            --enable-x11 \
-            --enable-xrandr \
+            $XBMC_XORG \
             --disable-ccache \
+            $XBMC_ALSA \
             $XBMC_PULSEAUDIO \
             --enable-rtmp \
             $XBMC_SAMBA \
             $XBMC_NFS \
             $XBMC_AFP \
+            $XBMC_VORBISENC \
             --enable-ffmpeg-libvorbis \
-            --enable-lame \
+            $XBMC_LAMEENC \
             $XBMC_DVDCSS \
             --disable-mid \
             --disable-hal \
             $XBMC_AVAHI \
+            $XBMC_UPNP \
+            $XBMC_MYSQL \
+            $XBMC_SSH \
             $XBMC_AIRPLAY \
             $XBMC_AIRTUNES \
             $XBMC_NONFREE \
             --disable-asap-codec \
             $XBMC_WEBSERVER \
-            --enable-optical-drive \
+            $XBMC_OPTICAL \
             $XBMC_BLURAY \
-            --enable-texturepacker \
+            --enable-texturepacker --with-texturepacker-root="$ROOT/$TOOLCHAIN" \
             --disable-external-libraries \
-            --disable-external-ffmpeg \
+            --enable-external-ffmpeg \
+            $XBMC_PLATFORM_SUPPORT \
+            $XBMC_PLAYER \
 
 # setup default skin inside the sources
   sed -i -e "s|skin.confluence|$SKIN_DIR|g" xbmc/settings/Settings.h
 
 make externals
 make xbmc.bin
-make xbmc-xrandr
+
+if [ "$DISPLAYSERVER" = "xorg-server" ]; then
+  make xbmc-xrandr
+fi
+
+make -C tools/TexturePacker
+cp -PR tools/TexturePacker/TexturePacker $ROOT/$TOOLCHAIN/bin

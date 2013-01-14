@@ -2,7 +2,7 @@
 
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with OpenELEC; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
@@ -42,12 +42,12 @@
 # exclude mounted partitions
 # for i in `cat /proc/mounts | grep ^/dev/ | cut -f1 -d " " | sed "s/[0-9]//"`; do TEST="$TEST `echo "| grep -v $i"`"; done
 
-# Interpret embedded "\Z" sequences in the dialog text by the following 
-# character, which tells dialog to set colors or video attributes: 0 through 7 
-# are the ANSI used in curses: black, red, green, yellow, blue, magenta, cyan 
-# and white respectively. Bold is set by 'b', reset by 'B'. Reverse is set 
-# by 'r', reset by 'R'. Underline is set by 'u', reset by 'U'. The settings are 
-# cumulative, e.g., "\Zb\Z1" makes the following text bold (perhaps bright) 
+# Interpret embedded "\Z" sequences in the dialog text by the following
+# character, which tells dialog to set colors or video attributes: 0 through 7
+# are the ANSI used in curses: black, red, green, yellow, blue, magenta, cyan
+# and white respectively. Bold is set by 'b', reset by 'B'. Reverse is set
+# by 'r', reset by 'R'. Underline is set by 'u', reset by 'U'. The settings are
+# cumulative, e.g., "\Zb\Z1" makes the following text bold (perhaps bright)
 # red. Restore normal settings with "\Zn".
 
 [ -f /etc/installer.conf ] && . /etc/installer.conf || exit 0
@@ -69,7 +69,7 @@ get_device_unmount() {
   # provides: DEVICES
 
     DEVICES=""
-    DEVICES=$(parted -m -l | grep ^/dev/sd | cut -f1 -d ":")
+    DEVICES=$(parted -s -m -l | grep ^/dev/sd | cut -f1 -d ":")
 
     for i in $(cat /proc/mounts | grep ^/dev/sd | cut -f1 -d " " | sed "s/[0-9]//"); do
       DEVICES=$(echo $DEVICES |sed -e "s|$i||")
@@ -82,7 +82,7 @@ get_partition() {
   # uses:     -
   # provides: PARTITIONS
 
-    PARTITIONS=$(parted -m $1 print |grep -v ^/dev |grep -v BYT | cut -f1 -d ":")
+    PARTITIONS=$(parted -s -m $1 print |grep -v ^/dev |grep -v BYT | cut -f1 -d ":")
 }
 
 create_device_list() {
@@ -104,8 +104,8 @@ create_device_list() {
     fi
 
     for i in $DEVICES; do
-      DEVICE_MODEL=$(parted $i -m print | grep ^$i | cut -f7 -d ":" | sed "s/;//")
-      DEVICE_SIZE=$(parted $i -m print | grep ^$i | cut -f2 -d ":")
+      DEVICE_MODEL=$(parted -s $i -m print | grep ^$i | cut -f7 -d ":" | sed "s/;//")
+      DEVICE_SIZE=$(parted -s $i -m print | grep ^$i | cut -f2 -d ":")
       DEVICE_NAME=$(echo $DEVICE_MODEL ${DEVICE_SIZE} | sed 's/ /_/g')
       DEVICE_LIST="$DEVICE_LIST $i $DEVICE_NAME"
     done
@@ -126,9 +126,9 @@ create_partition_list() {
     get_partition $1
 
     for partition in $PARTITIONS; do
-      PARTITION_NUMBER=$(parted -m $1 print |grep -v ^/dev |grep -v BYT | cut -f1 -d ":")
-      PARTITION_SIZE=$(parted -m $1 print |grep -v ^/dev |grep -v BYT | cut -f4 -d ":")
-      PARTITION_FORMAT=$(parted -m $1 print |grep -v ^/dev |grep -v BYT | cut -f5 -d ":")
+      PARTITION_NUMBER=$(parted -s -m $1 print |grep -v ^/dev |grep -v BYT | cut -f1 -d ":")
+      PARTITION_SIZE=$(parted -s -m $1 print |grep -v ^/dev |grep -v BYT | cut -f4 -d ":")
+      PARTITION_FORMAT=$(parted -s -m $1 print |grep -v ^/dev |grep -v BYT | cut -f5 -d ":")
       PARTITION_LIST=" $PARTITION_LIST \n Partition $1$PARTITION_NUMBER Size: $PARTITION_SIZE Format: $PARTITION_FORMAT"
     done
 }
@@ -189,6 +189,13 @@ do_install_quick() {
         INSTALL_DEVICE=$(cat "$TMPDIR/device_for_install")
 
         prompt_gpt
+        prompt_ssh
+        prompt_backup_unpack
+
+        EXTLINUX_SSH=""
+        if [ "$SSH" = "1" ]; then
+          EXTLINUX_SSH="ssh"
+        fi
 
         # remove all partitions
           msg_progress_install "1" "get all partitions $INSTALL_DEVICE"
@@ -230,13 +237,13 @@ do_install_quick() {
 
         # create filesystem
           msg_progress_install "23" "creating filesystem on ${INSTALL_DEVICE}1"
-            mke2fs -t ext4 ${INSTALL_DEVICE}1 >> $LOGFILE 2>&1
+            mke2fs -t ext4 -m 0 ${INSTALL_DEVICE}1 >> $LOGFILE 2>&1
 
           msg_progress_install "25" "set uuid and disklabel $DISKLABEL_SYSTEM on ${INSTALL_DEVICE}1"
             tune2fs -U random -L $DISKLABEL_SYSTEM  ${INSTALL_DEVICE}1 >> $LOGFILE 2>&1
 
           msg_progress_install "28" "creating filesystem on ${INSTALL_DEVICE}2"
-            mke2fs -t ext4 ${INSTALL_DEVICE}2 >> $LOGFILE 2>&1
+            mke2fs -t ext4 -m 0 ${INSTALL_DEVICE}2 >> $LOGFILE 2>&1
 
           msg_progress_install "30" "set uuid and disklabel $DISKLABEL_STORAGE on ${INSTALL_DEVICE}2"
             tune2fs -U random -L $DISKLABEL_STORAGE  ${INSTALL_DEVICE}2 >> $LOGFILE 2>&1
@@ -253,29 +260,50 @@ do_install_quick() {
             extlinux -i $TMPDIR/part1 >> $LOGFILE 2>&1
 
         # install system files
-          msg_progress_install "70" "installing Kernel"
+          msg_progress_install "60" "installing Kernel"
             cp /flash/KERNEL $TMPDIR/part1 >> $LOGFILE 2>&1
 
-          msg_progress_install "75" "installing System"
+          msg_progress_install "65" "installing System"
             cp /flash/SYSTEM $TMPDIR/part1 >> $LOGFILE 2>&1
             sync
 
         # configuring bootloader
-          msg_progress_install "90" "setup bootloader with boot label = $DISKLABEL_SYSTEM and disk label = $DISKLABEL_STORAGE"
+          msg_progress_install "80" "setup bootloader with boot label = $DISKLABEL_SYSTEM and disk label = $DISKLABEL_STORAGE"
             echo "DEFAULT linux" > $TMPDIR/part1/extlinux.conf
             echo "PROMPT 0" >> $TMPDIR/part1/extlinux.conf
             echo " " >> $TMPDIR/part1/extlinux.conf
             echo "LABEL linux" >> $TMPDIR/part1/extlinux.conf
             echo " KERNEL /KERNEL" >> $TMPDIR/part1/extlinux.conf
-            echo " APPEND boot=LABEL=$DISKLABEL_SYSTEM disk=LABEL=$DISKLABEL_STORAGE $EXTLINUX_PARAMETERS quiet" >> $TMPDIR/part1/extlinux.conf
+            echo " APPEND boot=LABEL=$DISKLABEL_SYSTEM disk=LABEL=$DISKLABEL_STORAGE $EXTLINUX_PARAMETERS $EXTLINUX_SSH quiet" >> $TMPDIR/part1/extlinux.conf
             sync
 
         # umount system partition, remove mountpoint
-          msg_progress_install "95" "unmount $TMPDIR/part1"
+          msg_progress_install "85" "unmount $TMPDIR/part1"
             umount $TMPDIR/part1 >> $LOGFILE 2>&1
 
-          msg_progress_install "100" "remove $TMPDIR/part1"
+          msg_progress_install "87" "remove $TMPDIR/part1"
             rmdir $TMPDIR/part1 >> $LOGFILE 2>&1
+
+          if [ "$BACKUP_UNPACK" = "1" ]; then
+            # mount storage partition
+              msg_progress_install "89" "creating $TMPDIR/part2"
+                mkdir -p $TMPDIR/part2 >> $LOGFILE 2>&1
+
+              msg_progress_install "90" "mounting ${INSTALL_DEVICE}2 to $TMPDIR/part2"
+                mount -t ext4 ${INSTALL_DEVICE}2 $TMPDIR/part2 >> $LOGFILE 2>&1
+
+              msg_progress_install "92" "restoring backup"
+                [ -f /flash/backup.tar.bz2 ] && tar -xjf /flash/backup.tar.bz2 -C $TMPDIR/part2 >> $LOGFILE 2>&1
+                [ -f /flash/backup.zip ] && unzip -qq /flash/backup.zip -d $TMPDIR/part2 >> $LOGFILE 2>&1
+                sync
+
+            # umount system partition, remove mountpoint
+              msg_progress_install "97" "unmount $TMPDIR/part2"
+                umount $TMPDIR/part2 >> $LOGFILE 2>&1
+
+              msg_progress_install "100" "remove $TMPDIR/part2"
+                rmdir $TMPDIR/part2 >> $LOGFILE 2>&1
+          fi
 
         menu_main
         ;;
@@ -365,6 +393,37 @@ prompt_gpt() {
     else
         GPT="0"
     fi
+}
+
+prompt_ssh() {
+  # Prompt for SSH enabling
+  # usage:    prompt_ssh
+  # uses:
+  # provides: SSH
+    MSG_TITLE="\Z1[ Enable SSH Server on start ]\Zn"
+    MSG_DETAIL="Enable SSH server per default.\nYou should only enable SSH server if you know what you are doing."
+    DIALOG_OPTIONS="--defaultno"
+    if dialog --colors --backtitle "$BACKTITLE" --title "$MSG_TITLE" $DIALOG_OPTIONS --yesno "$MSG_DETAIL" 0 0; then
+        SSH="1"
+    else
+        SSH="0"
+    fi
+}
+
+prompt_backup_unpack() {
+  # Prompt for unpacking backup files to /storage
+  # usage:    prompt_backup_unpack
+  # uses:
+  # provides: BACKUP_UNPACK
+  BACKUP_UNPACK="0"
+  if [ -f /flash/backup.tar.bz2 -o -f /flash/backup.zip ]; then
+    MSG_TITLE="\Z1[ Restore backup files ]\Zn"
+    MSG_DETAIL="Restore backup files to storage partition.\nFile backup.tar.bz2 or/and backup.zip exist on\ninstallation USB stick."
+    DIALOG_OPTIONS="--defaultno"
+    if dialog --colors --backtitle "$BACKTITLE" --title "$MSG_TITLE" $DIALOG_OPTIONS --yesno "$MSG_DETAIL" 0 0; then
+        BACKUP_UNPACK="1"
+    fi
+  fi
 }
 
 menu_main() {
@@ -512,7 +571,8 @@ bios_erase() {
 
 logfile_show() {
   # TODO: show the logfile
-    msg_not_implemented
+    dialog --textbox "$LOGFILE" 20 70
+    clear
     menu_main
 }
 
@@ -532,7 +592,7 @@ do_poweroff() {
 
 # setup needed variables
   BETA="yes"
-  INSTALLER_VERSION="0.2.5"
+  INSTALLER_VERSION="0.2.6"
   OS_VERSION=$(lsb_release)
   BACKTITLE="OpenELEC Installer $INSTALLER_VERSION - $OS_VERSION"
 

@@ -2,7 +2,7 @@
 
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,14 +16,13 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
 . config/options $1
 
 cd $PKG_BUILD
-gt_cv_func_gnugettext1_libintl=no \
 ./configure --host=$TARGET_NAME \
             --build=$HOST_NAME \
             --prefix=/usr \
@@ -33,60 +32,65 @@ gt_cv_func_gnugettext1_libintl=no \
             --enable-shared \
             --disable-static \
             --disable-gtk-doc \
-            --enable-tls \
-            --disable-mount \
-            --disable-fsck \
-            --disable-partx \
-            --enable-libuuid \
-            --enable-uuidd \
-            --enable-libblkid \
-            --disable-libmount \
-            --disable-mountpoint \
-            --enable-nls \
+            --disable-nls \
             --disable-rpath \
+            --enable-tls \
+            --enable-libuuid \
+            --enable-libblkid \
+            --enable-libmount \
+            --disable-deprecated-mount \
+            --disable-mount \
+            --enable-fsck \
+            --disable-partx \
+            --enable-uuidd \
+            --disable-mountpoint \
+            --disable-fallocate \
+            --disable-unshare \
             --disable-arch \
             --disable-ddate \
+	    --disable-eject \
             --disable-agetty \
             --disable-cramfs \
             --disable-switch-root \
             --disable-pivot-root \
-            --disable-fallocate \
-            --disable-unshare \
             --disable-elvtune \
             --disable-kill \
             --disable-last \
+	    --disable-utmpdump \
             --disable-line \
             --disable-mesg \
             --disable-raw \
             --disable-rename \
             --disable-reset \
-            --disable-login-utils \
+            --disable-vipw \
+            --disable-newgrp \
+            --disable-chfn-chsh \
+            --enable-chsh-only-listed \
+            --disable-login \
+            --disable-login-chown-vcs \
+            --disable-login-stat-mail \
+            --disable-sulogin \
+            --disable-su \
             --disable-schedutils \
             --disable-wall \
             --disable-write \
-            --enable-chsh-only-listed \
-            --disable-login-chown-vcs \
-            --disable-login-stat-mail \
+            --disable-chkdupexe \
+            --disable-socket-activation \
             --disable-pg-bell \
             --disable-require-password \
             --disable-use-tty-group \
             --disable-makeinstall-chown \
             --disable-makeinstall-setuid \
             --with-gnu-ld \
+            --without-selinux \
+            --without-audit \
+            --without-udev \
             --without-ncurses \
             --without-slang \
             --without-utempter \
-            --without-pam \
-            --without-selinux \
-            --without-audit
+            --without-systemdsystemunitdir
 
-make -C fsck fsck
-make -C mount swapon
-make -C misc-utils blkid
-make -C sys-utils fstrim
-make -C libuuid
-make -C libblkid
+make
 
-# libuuid must be installed before libblkid!!!
-  $MAKEINSTALL -C libuuid
-  $MAKEINSTALL -C libblkid
+$MAKEINSTALL
+

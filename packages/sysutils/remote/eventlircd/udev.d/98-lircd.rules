@@ -30,11 +30,26 @@ SUBSYSTEMS=="usb", GOTO="begin-usb"
 GOTO="end-usb"
 LABEL="begin-usb"
 
-ENV{ID_USB_INTERFACES}=="", IMPORT{program}="usb_id --export %p"
+ENV{ID_USB_INTERFACES}=="", IMPORT{builtin}="usb_id"
 
 ENV{ID_VENDOR_ID}=="0fe9", ENV{ID_MODEL_ID}=="9010", \
   ENV{lircd_driver}="dvico", \
   ENV{lircd_conf}="/etc/lirc/lircd.conf"
+
+### Microsoft Xbox DVD dongle
+ENV{ID_VENDOR_ID}=="045e", ENV{ID_MODEL_ID}=="0284", \
+  ENV{lircd_driver}="default", \
+  ENV{lircd_conf}="/etc/lirc/lircd.conf.xbox"
+
+### Gamester Xbox DVD dongle
+ENV{ID_VENDOR_ID}=="040b", ENV{ID_MODEL_ID}=="6521", \
+  ENV{lircd_driver}="default", \
+  ENV{lircd_conf}="/etc/lirc/lircd.conf.xbox"
+
+### Chinese Manufacturers Xbox DVD dongle
+ENV{ID_VENDOR_ID}=="ffff", ENV{ID_MODEL_ID}=="ffff", \
+  ENV{lircd_driver}="default", \
+  ENV{lircd_conf}="/etc/lirc/lircd.conf.xbox"
 
 # Enable wake-on-usb for the USB remotes.
 ENV{lircd_driver}=="?*", ENV{lircd_conf}=="?*", RUN+="wakeup_enable"

@@ -2,7 +2,7 @@
 
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2011 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with OpenELEC.tv; see the file COPYING.  If not, write to
-#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
@@ -110,17 +110,22 @@ if [ ! -f /var/lock/update.lock ]; then
 
       # move KERNEL and SYSTEM to an temporary file
         mkdir -p /storage/.update
-
-        [ -f $TMP_DIR/$NEW_IMAGE/target/KERNEL ] && \
+        if [ -f $TMP_DIR/$NEW_IMAGE/target/KERNEL -a -f $TMP_DIR/$NEW_IMAGE/target/KERNEL.md5 ]; then
           mv $TMP_DIR/$NEW_IMAGE/target/KERNEL /storage/.update/KERNEL.tmp
-
-        [ -f $TMP_DIR/$NEW_IMAGE/target/SYSTEM ] && \
+          mv $TMP_DIR/$NEW_IMAGE/target/KERNEL.md5 /storage/.update/KERNEL.md5.tmp
+        fi
+        if [ -f $TMP_DIR/$NEW_IMAGE/target/SYSTEM -a -f $TMP_DIR/$NEW_IMAGE/target/SYSTEM.md5 ]; then
           mv $TMP_DIR/$NEW_IMAGE/target/SYSTEM /storage/.update/SYSTEM.tmp
+          mv $TMP_DIR/$NEW_IMAGE/target/SYSTEM.md5 /storage/.update/SYSTEM.md5.tmp
+        fi
         sync
 
       # move KERNEL and SYSTEM to the right place
         mv /storage/.update/KERNEL.tmp /storage/.update/KERNEL
+        mv /storage/.update/KERNEL.md5.tmp /storage/.update/KERNEL.md5
         mv /storage/.update/SYSTEM.tmp /storage/.update/SYSTEM
+        mv /storage/.update/SYSTEM.md5.tmp /storage/.update/SYSTEM.md5
+        sync
 
       # cleanup tmp files
         rm -rf $TMP_DIR/$NEW_IMAGE

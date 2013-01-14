@@ -1,11 +1,55 @@
+if [ "$DISPLAYSERVER" = "xorg-server" ]; then
+  SDL_SUPPORT="yes"
+else
+  SDL_SUPPORT="no"
+fi
+
+if [ "$OPENGL" = no ]; then
+  OPENGL_SUPPORT="no"
+else
+  OPENGL_SUPPORT="yes"
+fi
+
+if [ "$OPENGLES" = no ]; then
+  OPENGLES_SUPPORT="no"
+else
+  OPENGLES_SUPPORT="yes"
+fi
+
+if [ "$SDL_SUPPORT" = no ]; then
+  JOYSTICK_SUPPORT="no"
+fi
+
+if [ "$OPENMAX" = no ]; then
+  OPENMAX_SUPPORT="no"
+else
+  OPENMAX_SUPPORT="yes"
+fi
+
+if [ "$OPENGL_SUPPORT" = no ]; then
+  XBMC_SCR_RSXS="no"
+  XBMC_VIS_PROJECTM="no"
+  XBMC_VIS_GOOM="no"
+fi
+
 get_graphicdrivers() {
   if [ "$GRAPHIC_DRIVERS" = "all" ]; then
-    GRAPHIC_DRIVERS="i915 i965 r200 r300 r600 fglrx nvidia vmware"
+    GRAPHIC_DRIVERS="i915 i965 r200 r300 r600 fglrx nvidia vmware virtualbox"
   fi
 
   for drv in $GRAPHIC_DRIVERS; do
+    if [ "$drv" = "dove" ]; then
+      XORG_DRIVERS="$XORG_DRIVERS dove"
+    fi
+
     if [ "$drv" = "fglrx" ]; then
       XORG_DRIVERS="$XORG_DRIVERS fglrx"
+      COMPOSITE_SUPPORT="yes"
+      XINERAMA_SUPPORT="yes"
+    fi
+
+    if [ "$drv" = "fglrx-legacy" ]; then
+      XORG_DRIVERS="$XORG_DRIVERS fglrx-legacy"
       COMPOSITE_SUPPORT="yes"
       XINERAMA_SUPPORT="yes"
     fi
@@ -34,6 +78,17 @@ get_graphicdrivers() {
       XINERAMA_SUPPORT="yes"
     fi
 
+    if [ "$drv" = "nvidia-legacy" ]; then
+      XORG_DRIVERS="$XORG_DRIVERS nvidia-legacy"
+      XINERAMA_SUPPORT="yes"
+    fi
+
+    if [ "$drv" = "virtualbox" ]; then
+      DRI_DRIVERS="$DRI_DRIVERS,swrast"
+      XORG_DRIVERS="$XORG_DRIVERS virtualbox"
+      XINERAMA_SUPPORT="yes"
+    fi
+
     if [ "$drv" = "omapfb" ]; then
       DRI_DRIVERS="$DRI_DRIVERS,swrast"
 #      GALLIUM_DRIVERS="$GALLIUM_DRIVERS,swrast"
@@ -59,6 +114,9 @@ get_graphicdrivers() {
     fi
 
     if [ "$drv" = "vmware" ]; then
+      DRI_DRIVERS="$DRI_DRIVERS,swrast"
+      GALLIUM_DRIVERS="$GALLIUM_DRIVERS,svga"
+      XORG_DRIVERS="$XORG_DRIVERS vmware"
       XINERAMA_SUPPORT="yes"
 #      LLVM_SUPPORT="yes"
     fi
