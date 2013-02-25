@@ -34,6 +34,8 @@ cd $PKG_BUILD
             --arch=$TARGET_ARCH \
             --cpu=$TARGET_CPU \
             --cc=$TARGET_CC \
+            --enable-timeshift \
+            --disable-libav \
             --enable-bundle
 
 make
